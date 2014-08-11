@@ -1,0 +1,31 @@
+<metro:MetroWindow x:Class="DesktopOrganizer.Shell.Views.ShellView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:cal="http://www.caliburnproject.org"
+                   GlowBrush="{DynamicResource AccentColorBrush}"
+                   WindowStartupLocation="CenterScreen"
+                   Height="600"
+                   Width="800">
+    
+    <metro:MetroWindow.WindowCommands>
+        <metro:WindowCommands>
+            <ItemsControl x:Name="ShellCommands">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button x:Name="Execute"
+                                Content="{Binding DisplayName}"
+                                cal:Bind.Model="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </metro:WindowCommands>
+    </metro:MetroWindow.WindowCommands>
+    
+    <ContentControl x:Name="ActiveItem"/>
+</metro:MetroWindow>

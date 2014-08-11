@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="DesktopOrganizer.Main.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="635">
+    
+    <metro:MetroAnimatedTabControl Margin="50">
+        <TabItem Header="Windows">
+            <DockPanel Margin="25">
+                <StackPanel DockPanel.Dock="Left">
+                    <Button x:Name="NewProgramLayout" Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button x:Name="ApplyProgramLayout" Content="Apply" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button x:Name="EditProgramLayout" Content="Edit" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button x:Name="DeleteProgramLayout" Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
+                </StackPanel>
+                <ListBox Margin="25,0" x:Name="ProgramLayouts"/>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Icons">
+            <DockPanel Margin="25">
+                <StackPanel DockPanel.Dock="Left">
+                    <Button Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button Content="Restore" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
+                </StackPanel>
+                <ListBox Margin="25,0" x:Name="IconLayouts"/>
+            </DockPanel>
+        </TabItem>
+    </metro:MetroAnimatedTabControl>
+</UserControl>
