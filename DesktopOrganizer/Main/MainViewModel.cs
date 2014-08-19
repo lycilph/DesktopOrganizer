@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using DesktopOrganizer.CaptureWindows;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell.ViewModels;

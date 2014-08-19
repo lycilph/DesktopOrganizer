@@ -11,13 +11,22 @@ namespace DesktopOrganizer.Data
         public bool Admin { get; set; }
         public User32.WindowPlacement Placement { get; set; }
 
-        // Temp data (not persisted)
         [JsonIgnore]
         public List<Window> Windows { get; set; }
 
         public Program()
         {
             Windows = new List<Window>();
+        }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        public static Program Deserialize(string json)
+        {
+            return JsonConvert.DeserializeObject<Program>(json);
         }
     }
 }

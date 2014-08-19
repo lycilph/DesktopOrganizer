@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Caliburn.Micro.ReactiveUI;
 using System.ComponentModel.Composition;
 using DesktopOrganizer.Data;
@@ -24,6 +25,8 @@ namespace DesktopOrganizer.Shell.ViewModels
             private set { this.RaiseAndSetIfChanged(ref _ShellCommands, value); }
         }
 
+        public bool Exiting { get; private set; }
+
         public ShellViewModel()
         {
             application_settings = ApplicationSettings.Load();
@@ -31,6 +34,7 @@ namespace DesktopOrganizer.Shell.ViewModels
             items = new Stack<ViewModelBase>();
 
             ShellCommands.Add(new WindowCommand("Settings", () => Show(settings_view_model)));
+            ShellCommands.Add(new WindowCommand("Quit", Exit));
 
             Show(new MainViewModel(this, application_settings));
         }
@@ -38,7 +42,8 @@ namespace DesktopOrganizer.Shell.ViewModels
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            DisplayName = "Desktop Organizer";
+            DisplayName = "Desktop Organizer" + (Advapi32.IsRunningAsAdministrator(Process.GetCurrentProcess()) ? " (Administrator)" : string.Empty);
+            application_settings.ApplyShortcuts();
         }
 
         protected override void OnDeactivate(bool close)
@@ -59,6 +64,12 @@ namespace DesktopOrganizer.Shell.ViewModels
         {
             items.Push(view_model);
             ActivateItem(view_model);
+        }
+
+        public void Exit()
+        {
+            Exiting = true;
+            TryClose();
         }
     }
 }

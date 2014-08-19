@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:resources="clr-namespace:DesktopOrganizer.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="678.947" d:DesignWidth="842.584">
     <Grid Margin="50">
@@ -29,6 +31,13 @@
                          Margin="10,0,0,0"
                          Style="{StaticResource SubHeaderTextBoxStyle}"/>
             </DockPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock DockPanel.Dock="Left"
+                           Text="Shortcut"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource SubHeaderTextBlockStyle}"/>
+                <resources:ShortcutControl Margin="10,0,0,0" Shortcut="{Binding Shortcut}"/>
+            </StackPanel>
             <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="0,10,0,0">
                 <TextBlock DockPanel.Dock="Left"
                            Text="Windows"
@@ -45,7 +54,8 @@
             <ListBox x:Name="Programs"
                      Margin="0,10,0,0"
                      HorizontalContentAlignment="Stretch"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     cal:Message.Attach="[Shortcut Delete] = [Delete]">
                 <ListBox.ItemContainerStyle>
                     <Style>
                         <Setter Property="Control.Margin" Value="0,5"/>

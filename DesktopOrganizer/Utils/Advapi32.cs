@@ -18,8 +18,8 @@ namespace DesktopOrganizer.Utils
 
             var elevation_result = TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
             var elevation_result_size = Marshal.SizeOf((int)elevation_result);
-            uint returned_size = 0;
             var elevation_type_ptr = Marshal.AllocHGlobal(elevation_result_size);
+            uint returned_size;
 
             var success = GetTokenInformation(token_handle, TOKEN_INFORMATION_CLASS.TokenElevationType, elevation_type_ptr, (uint)elevation_result_size, out returned_size);
             if (!success)

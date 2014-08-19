@@ -16,11 +16,19 @@ namespace DesktopOrganizer.Settings
             set { this.RaiseAndSetIfChanged(ref _ExcludedProcesses, value); }
         }
 
+        private bool _LaunchOnWindowsStart;
+        public bool LaunchOnWindowsStart
+        {
+            get { return _LaunchOnWindowsStart; }
+            set { this.RaiseAndSetIfChanged(ref _LaunchOnWindowsStart, value); }
+        }
+
         public SettingsViewModel(IShell shell, ApplicationSettings application_settings) : base(shell, application_settings) { }
 
         private void Initialize()
         {
-            ExcludedProcesses = string.Join(", ", application_settings.ExcludedProcesses);            
+            ExcludedProcesses = string.Join(", ", application_settings.ExcludedProcesses);
+            LaunchOnWindowsStart = application_settings.LaunchOnWindowsStart;
         }
 
         protected override void OnActivate()
@@ -34,6 +42,7 @@ namespace DesktopOrganizer.Settings
             base.OnDeactivate(close);
 
             application_settings.ExcludedProcesses = ExcludedProcesses.Split(new[] { "," }, StringSplitOptions.None).Select(s => s.Trim()).ToList();
+            application_settings.LaunchOnWindowsStart = LaunchOnWindowsStart;
         }
 
         public void Back()

@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell.ViewModels;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
+using Window = DesktopOrganizer.Data.Window;
 
 namespace DesktopOrganizer.CaptureWindows
 {
@@ -20,8 +21,22 @@ namespace DesktopOrganizer.CaptureWindows
             set { this.RaiseAndSetIfChanged(ref _LayoutName, value); }
         }
 
-        private List<ProgramViewModel> _Programs;
-        public List<ProgramViewModel> Programs
+        private Shortcut _Shortcut;
+        public Shortcut Shortcut
+        {
+            get { return _Shortcut; }
+            set { this.RaiseAndSetIfChanged(ref _Shortcut, value); }
+        }
+
+        private ProgramViewModel _CurrentProgram;
+        public ProgramViewModel CurrentProgram
+        {
+            get { return _CurrentProgram; }
+            set { this.RaiseAndSetIfChanged(ref _CurrentProgram, value); }
+        }
+
+        private ReactiveList<ProgramViewModel> _Programs;
+        public ReactiveList<ProgramViewModel> Programs
         {
             get { return _Programs; }
             set { this.RaiseAndSetIfChanged(ref _Programs, value); }
@@ -33,15 +48,38 @@ namespace DesktopOrganizer.CaptureWindows
             this.is_editing = is_editing;
 
             LayoutName = layout.Name;
-            Programs = layout.Items.Select(p => new ProgramViewModel(p)).ToList();
+            Shortcut = layout.Shortcut.Clone();
+            Programs = layout.Items.Select(p => new ProgramViewModel(p)).ToReactiveList();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            application_settings.SuppressShortcuts = true;
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            if (close)
+                application_settings.SuppressShortcuts = false;
         }
 
         public void Capture()
         {
-            Predicate<Window> filter = (w => application_settings.ExcludedProcesses.Contains(w.ProcessName, StringComparer.InvariantCultureIgnoreCase));
-            Programs = WindowManager.GetPrograms(filter)
-                                    .Select(p => new ProgramViewModel(p))
-                                    .ToList();
+            try
+            {
+                Predicate<Window> filter = (w => application_settings.ExcludedProcesses.Contains(w.ProcessName, StringComparer.InvariantCultureIgnoreCase));
+                Programs = WindowManager.GetPrograms(filter)
+                                        .Select(p => new ProgramViewModel(p))
+                                        .ToReactiveList();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
         }
 
         public void Back()
@@ -51,11 +89,17 @@ namespace DesktopOrganizer.CaptureWindows
 
         public void Ok()
         {
-            layout.Name = LayoutName;
-            layout.Items = new List<Program>(Programs.Select(p => p.AssociatedObject).ToList());
+            var new_layout = new Layout<Program>
+            {
+                Name = LayoutName,
+                Shortcut = Shortcut.Clone(),
+                Items = Programs.Select(p => p.AssociatedObject).ToList()
+            };
 
-            if (!is_editing)
-                application_settings.ProgramLayouts.Add(layout);
+            if (is_editing)
+                application_settings.UpdateProgramLayout(layout, new_layout);
+            else
+                application_settings.AddProgramLayout(new_layout);
 
             shell.Back();
         }
@@ -63,6 +107,12 @@ namespace DesktopOrganizer.CaptureWindows
         public void Cancel()
         {
             shell.Back();
+        }
+
+        public void Delete()
+        {
+            if (CurrentProgram != null)
+                Programs.Remove(CurrentProgram);
         }
     }
 }

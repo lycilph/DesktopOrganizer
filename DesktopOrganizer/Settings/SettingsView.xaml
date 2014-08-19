@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="768">
     <Grid Margin="50">
@@ -22,6 +23,10 @@
             <TextBlock Text="Settings" Style="{StaticResource HeaderTextBlockStyle}"/>
             <TextBlock Text="Processes to exclude (comma separated)" Margin="0,10,0,0"/>
             <TextBox x:Name="ExcludedProcesses" Margin="0,10,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Start on Windows Launch" VerticalAlignment="Center "/>
+                <controls:ToggleSwitchButton x:Name="LaunchOnWindowsStart" Margin="10,0,0,0"/>
+            </StackPanel>
             <Button x:Name="Reset" Content="Reset" Style="{StaticResource SubHeaderButtonStyle}" HorizontalAlignment="Left"/>
         </StackPanel>
     </Grid>
