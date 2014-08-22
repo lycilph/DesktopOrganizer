@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DesktopOrganizer.Utils
+namespace Core
 {
     public class Advapi32
     {

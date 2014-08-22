@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using DesktopOrganizer.Data;
-using DesktopOrganizer.Shell.ViewModels;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
 
 namespace DesktopOrganizer.Settings
 {
+    [Export(typeof(SettingsViewModel))]
     public class SettingsViewModel : ViewModelBase
     {
         private string _ExcludedProcesses;
@@ -23,7 +24,8 @@ namespace DesktopOrganizer.Settings
             set { this.RaiseAndSetIfChanged(ref _LaunchOnWindowsStart, value); }
         }
 
-        public SettingsViewModel(IShell shell, ApplicationSettings application_settings) : base(shell, application_settings) { }
+        [ImportingConstructor]
+        public SettingsViewModel(ApplicationSettings application_settings) : base(application_settings) { }
 
         private void Initialize()
         {
@@ -47,7 +49,7 @@ namespace DesktopOrganizer.Settings
 
         public void Back()
         {
-            shell.Back();
+            //shell.Back();
         }
 
         public void Reset()

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using Core.Data;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell.ViewModels;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
-using Window = DesktopOrganizer.Data.Window;
+using Window = Core.Data.Window;
 
 namespace DesktopOrganizer.CaptureWindows
 {
@@ -78,7 +79,6 @@ namespace DesktopOrganizer.CaptureWindows
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                throw;
             }
         }
 
@@ -96,10 +96,10 @@ namespace DesktopOrganizer.CaptureWindows
                 Items = Programs.Select(p => p.AssociatedObject).ToList()
             };
 
-            if (is_editing)
-                application_settings.UpdateProgramLayout(layout, new_layout);
-            else
-                application_settings.AddProgramLayout(new_layout);
+            //if (is_editing)
+            //    application_settings.UpdateProgramLayout(layout, new_layout);
+            //else
+            //    application_settings.AddProgramLayout(new_layout);
 
             shell.Back();
         }

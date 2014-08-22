@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:cal="http://www.caliburnproject.org">
 
     <system:Double x:Key="HeaderFontSize">30</system:Double>
     <system:Double x:Key="SubHeaderFontSize">20</system:Double>
@@ -69,7 +71,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="SubHeaderButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource SubHeaderFontSize}" />
@@ -96,7 +98,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="ContentButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
@@ -117,6 +119,92 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush4}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Dropdown Button -->
+
+    <Style x:Key="SubHeaderDropDownButtonStyle" TargetType="{x:Type metro:DropDownButton}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource SubHeaderFontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HeaderFontFamily}" />
+        <Setter Property="cal:Action.TargetWithoutContext" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type metro:DropDownButton}">
+                    <Button x:Name="PART_Button"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource SubHeaderButtonStyle}"
+                            Command="{TemplateBinding Command}"
+                            CommandParameter="{TemplateBinding CommandParameter}"
+                            CommandTarget="{TemplateBinding CommandTarget}"
+                            Tag="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContentPresenter RecognizesAccessKey="True" Content="{TemplateBinding Icon}"/>
+                            <ContentControl MinWidth="20"
+                                            Margin="0,0,3,0"
+                                            x:Name="PART_ButtonContent"
+                                            VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                                            HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}" 
+                                            VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                                            ContentStringFormat="{TemplateBinding ItemStringFormat}"
+                                            Content="{Binding Content, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Rectangle Name="PART_Rectangle"
+                                       Height="6"
+                                       Width="10"
+                                       Margin="0,0,3,0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Fill="{DynamicResource AccentColorBrush}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill">
+                                        <VisualBrush.Visual>
+                                            <Canvas Width="18"
+                                                    Height="18"
+                                                    Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
+                                                    UseLayoutRounding="False">
+                                                <Path Width="18"
+                                                      Height="16"
+                                                      Canvas.Left="14.9063"
+                                                      Canvas.Top="15.75"
+                                                      Stretch="Fill"
+                                                      Fill="{DynamicResource BlackColorBrush}"
+                                                      Data="F1 M 23.9063,25L 25.9063,23L 32.9063,15.75L 32.9063,22.25L 23.9062,31.75L 14.9063,22.25L 14.9063,15.75L 21.9063,23L 23.9063,25 Z " />
+                                            </Canvas>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                        <Button.ContextMenu>
+                            <ContextMenu Name="PART_Menu"
+                                         StaysOpen="False"
+                                         MinWidth="{TemplateBinding ActualWidth}"
+                                         IsOpen="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                         ItemTemplate="{TemplateBinding ItemTemplate}"
+                                         ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                         ItemStringFormat="{TemplateBinding ItemStringFormat}"
+                                         ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
+                                         ItemContainerStyleSelector="{TemplateBinding ItemContainerStyleSelector}"
+                                         ItemsSource="{TemplateBinding ItemsSource}"
+                                         cal:Action.TargetWithoutContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget.Tag}"/>
+                        </Button.ContextMenu>
+                    </Button>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Rectangle" Property="Fill" Value="{DynamicResource GrayBrush2}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Rectangle" Property="Fill" Value="{DynamicResource AccentColorBrush4}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

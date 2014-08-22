@@ -3,7 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using DesktopOrganizer.Data;
+using Core;
+using Core.Data;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
 

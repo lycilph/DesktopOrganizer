@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Core;
+using Shortcut = Core.Data.Shortcut;
 
 namespace DesktopOrganizer.Utils
 {
@@ -60,7 +62,7 @@ namespace DesktopOrganizer.Utils
             };
         }
 
-        public void RegisterHotKey(Data.Shortcut sc)
+        public void RegisterHotKey(Shortcut sc)
         {
             var win_forms_key = (Keys)KeyInterop.VirtualKeyFromKey(sc.Key);
             sc.Id = RegisterHotKey(sc.Modifiers, win_forms_key);
@@ -76,7 +78,7 @@ namespace DesktopOrganizer.Utils
             return current_id;
         }
 
-        public void UnregisterHotKey(Data.Shortcut sc)
+        public void UnregisterHotKey(Shortcut sc)
         {
             UnregisterHotKey(sc.Id);
         }
@@ -87,12 +89,16 @@ namespace DesktopOrganizer.Utils
                 throw new InvalidOperationException("Couldn’t unregister the hot key");
         }
 
-        public void Dispose()
+        public void UnregisterAll()
         {
-            // Unregister all the registered hot keys.
             for (var i = current_id; i > 0; i--)
                 User32.UnregisterHotKey(internal_window.Handle, i);
+            current_id = 0;
+        }
 
+        public void Dispose()
+        {
+            UnregisterAll();
             // Dispose the inner native window.
             internal_window.Dispose();
         }

@@ -8,7 +8,7 @@ using System.Windows;
 [assembly: AssemblyTitle("DesktopOrganizer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Ly Cilph")]
 [assembly: AssemblyProduct("DesktopOrganizer")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]

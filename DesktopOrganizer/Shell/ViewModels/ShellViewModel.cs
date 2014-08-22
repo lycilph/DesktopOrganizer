@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using System.ComponentModel.Composition;
+using Core;
+using DesktopOrganizer.About;
 using DesktopOrganizer.Data;
+using DesktopOrganizer.Dialogs;
 using DesktopOrganizer.Main;
 using DesktopOrganizer.Settings;
 using DesktopOrganizer.Shell.Utils;
@@ -14,7 +18,6 @@ namespace DesktopOrganizer.Shell.ViewModels
     [Export(typeof(IShell))]
     public class ShellViewModel : ReactiveConductor<ViewModelBase>, IShell
     {
-        private readonly ApplicationSettings application_settings;
         private readonly SettingsViewModel settings_view_model;
         private readonly Stack<ViewModelBase> items;
 
@@ -27,31 +30,34 @@ namespace DesktopOrganizer.Shell.ViewModels
 
         public bool Exiting { get; private set; }
 
+        [ImportingConstructor]
         public ShellViewModel()
         {
-            application_settings = ApplicationSettings.Load();
-            settings_view_model = new SettingsViewModel(this, application_settings);
+            settings_view_model = IoC.Get<SettingsViewModel>();
             items = new Stack<ViewModelBase>();
 
             ShellCommands.Add(new WindowCommand("Settings", () => Show(settings_view_model)));
+            ShellCommands.Add(new WindowCommand("About", ShowAbout));
             ShellCommands.Add(new WindowCommand("Quit", Exit));
 
-            Show(new MainViewModel(this, application_settings));
+            //Show(new MainViewModel(this, application_settings));
+        }
+
+        private static async void ShowAbout()
+        {
+            await DialogController.ShowAsync(new AboutViewModel(), false);
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
             DisplayName = "Desktop Organizer" + (Advapi32.IsRunningAsAdministrator(Process.GetCurrentProcess()) ? " (Administrator)" : string.Empty);
-            application_settings.ApplyShortcuts();
         }
 
-        protected override void OnDeactivate(bool close)
+        public void Exit()
         {
-            base.OnDeactivate(close);
-
-            if (close)
-                ApplicationSettings.Save(application_settings);
+            Exiting = true;
+            TryClose();
         }
 
         public void Back()
@@ -64,12 +70,6 @@ namespace DesktopOrganizer.Shell.ViewModels
         {
             items.Push(view_model);
             ActivateItem(view_model);
-        }
-
-        public void Exit()
-        {
-            Exiting = true;
-            TryClose();
         }
     }
 }

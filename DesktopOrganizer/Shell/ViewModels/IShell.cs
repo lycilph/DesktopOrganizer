@@ -1,4 +1,3 @@
-using Caliburn.Micro;
 using DesktopOrganizer.Utils;
 
 namespace DesktopOrganizer.Shell.ViewModels

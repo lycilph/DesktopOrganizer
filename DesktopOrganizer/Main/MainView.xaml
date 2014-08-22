@@ -4,10 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="635">
+    <Grid x:Name="layout_root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Margin="50">
+            <TextBlock Text="Actions" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <metro:DropDownButton Content="Capture"
+                                  ItemsSource="{Binding CaptureCommands}"
+                                  Style="{StaticResource SubHeaderDropDownButtonStyle}">
+                <metro:DropDownButton.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Title}"
+                                Style="{StaticResource SubHeaderButtonStyle}"
+                                cal:Message.Attach="[Click] = [Capture($dataContext)]"/>
+                    </DataTemplate>
+                </metro:DropDownButton.ItemTemplate>
+            </metro:DropDownButton>
+            <Button Content="Apply" Style="{StaticResource SubHeaderButtonStyle}"/>
+            <Button Content="Edit" Style="{StaticResource SubHeaderButtonStyle}"/>
+            <Button Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
+        </StackPanel>
+        
+        <DockPanel Grid.Column="1" Margin="50">
+            <TextBlock DockPanel.Dock="Top" Text="Layouts" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <ListBox Margin="0,25,0,0"/>
+        </DockPanel>
+    </Grid>
     
-    <metro:MetroAnimatedTabControl Margin="50">
+    
+    <!--<metro:MetroAnimatedTabControl Margin="50" SelectedIndex="{Binding Index}">
         <TabItem Header="Windows">
             <DockPanel Margin="25">
                 <StackPanel DockPanel.Dock="Left">
@@ -22,12 +53,16 @@
         <TabItem Header="Icons">
             <DockPanel Margin="25">
                 <StackPanel DockPanel.Dock="Left">
-                    <Button Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <Button x:Name="NewIconLayout" Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
                     <Button Content="Restore" Style="{StaticResource SubHeaderButtonStyle}"/>
                     <Button Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
+                    <metro:DropDownButton Content="Capture"
+                                          ItemsSource="{Binding CaptureCommands}"
+                                          DisplayMemberPath="Title"
+                                          BorderBrush="Transparent"/>
                 </StackPanel>
                 <ListBox Margin="25,0" x:Name="IconLayouts"/>
             </DockPanel>
         </TabItem>
-    </metro:MetroAnimatedTabControl>
+    </metro:MetroAnimatedTabControl>-->
 </UserControl>

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using DesktopOrganizer.Shell.ViewModels;
 
 namespace DesktopOrganizer.Shell.Views
 {
@@ -43,18 +42,18 @@ namespace DesktopOrganizer.Shell.Views
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
-            var vm = DataContext as IShell;
-            if (vm == null) return;
+            //var vm = DataContext as IShell;
+            //if (vm == null) return;
 
-            if (vm.Exiting)
-            {
-                TaskbarIcon.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                e.Cancel = true;
-                WindowState = WindowState.Minimized;    
-            }
+            //if (vm.Exiting)
+            //{
+            //    TaskbarIcon.Visibility = Visibility.Hidden;
+            //}
+            //else
+            //{
+            //    e.Cancel = true;
+            //    WindowState = WindowState.Minimized;
+            //}
         }
     }
 }

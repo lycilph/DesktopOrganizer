@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace DesktopOrganizer.Data
+namespace Core.Data
 {
     public class Shortcut
     {

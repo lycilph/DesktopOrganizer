@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
-using DesktopOrganizer.Data;
-using Window = DesktopOrganizer.Data.Window;
+using Core;
+using Core.Data;
+using Window = Core.Data.Window;
 
 namespace DesktopOrganizer.Utils
 {

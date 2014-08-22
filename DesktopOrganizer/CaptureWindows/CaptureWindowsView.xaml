@@ -21,7 +21,7 @@
         </Button>
 
         <DockPanel Grid.Column="1" Margin="50,0">
-            <TextBlock DockPanel.Dock="Top" Text="Capture New Layout" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <TextBlock DockPanel.Dock="Top" Text="Capture New Window Layout" Style="{StaticResource HeaderTextBlockStyle}"/>
             <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
                 <TextBlock DockPanel.Dock="Left"
                            Text="Name"

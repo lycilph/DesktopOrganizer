@@ -40,11 +40,13 @@
     <ApplicationIcon>Resources\organization.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0\lib\net45\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    <Reference Include="Caliburn.Micro.Platform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.ReactiveUI, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -53,17 +55,17 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=0.14.0.98, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MahApps.Metro, Version=0.15.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.14.0-ALPHA98\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA2\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI, Version=6.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ReactiveUI, Version=6.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-core.6.0.4\lib\Net45\ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\reactiveui-core.6.0.5\lib\Net45\ReactiveUI.dll</HintPath>
     </Reference>
     <Reference Include="Splat, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,7 +73,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,13 +96,11 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.14.0-ALPHA98\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA2\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -114,7 +113,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="About\AboutViewModel.cs" />
+    <Compile Include="About\Package.cs" />
     <Compile Include="ApplicationBootstrapper.cs" />
+    <Compile Include="CaptureIcons\CaptureIconsView.xaml.cs">
+      <DependentUpon>CaptureIconsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CaptureIcons\CaptureIconsViewModel.cs" />
+    <Compile Include="CaptureIcons\IconView.xaml.cs">
+      <DependentUpon>IconView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CaptureIcons\IconViewModel.cs" />
     <Compile Include="CaptureWindows\CaptureWindowsView.xaml.cs">
       <DependentUpon>CaptureWindowsView.xaml</DependentUpon>
     </Compile>
@@ -127,11 +139,16 @@
       <DependentUpon>WindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="CaptureWindows\WindowViewModel.cs" />
-    <Compile Include="Data\Layout.cs" />
+    <Compile Include="Capture\CaptureView.xaml.cs">
+      <DependentUpon>CaptureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\CaptureViewModel.cs" />
     <Compile Include="Data\ApplicationSettings.cs" />
-    <Compile Include="Data\Program.cs" />
-    <Compile Include="Data\Shortcut.cs" />
-    <Compile Include="Data\Window.cs" />
+    <Compile Include="Dialogs\DialogController.cs" />
+    <Compile Include="Dialogs\HostDialog.xaml.cs">
+      <DependentUpon>HostDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\CaptureCommand.cs" />
     <Compile Include="Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -161,15 +178,27 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\Advapi32.cs" />
     <Compile Include="Utils\AssemblyInfo.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />
+    <Compile Include="Utils\IconManagerWrapper.cs" />
     <Compile Include="Utils\ItemViewModelBase.cs" />
     <Compile Include="Utils\KeyboardHook.cs" />
     <Compile Include="Utils\ProcessExtensions.cs" />
-    <Compile Include="Utils\User32.cs" />
+    <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
     <Compile Include="Utils\WindowManager.cs" />
+    <Page Include="About\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CaptureIcons\CaptureIconsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CaptureIcons\IconView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CaptureWindows\CaptureWindowsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +210,14 @@
     <Page Include="CaptureWindows\WindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Capture\CaptureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\HostDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Main\MainView.xaml">
       <SubType>Designer</SubType>
@@ -226,7 +263,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
-    <None Include="packages.config" />
+    <EmbeddedResource Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -244,8 +281,12 @@
     <Resource Include="Resources\organization.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\appbar.door.leave.png" />
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{42d6ed23-2e4a-416e-b922-b3f7a1d25001}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

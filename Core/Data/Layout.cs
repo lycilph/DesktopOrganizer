@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DesktopOrganizer.Data
+namespace Core.Data
 {
-    public class Layout<T>
+    public class Layout<T> : ILayout
     {
         public string Name { get; set; }
         public List<T> Items { get; set; }

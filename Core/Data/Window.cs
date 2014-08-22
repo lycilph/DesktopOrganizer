@@ -1,7 +1,6 @@
 ﻿using System;
-using DesktopOrganizer.Utils;
 
-namespace DesktopOrganizer.Data
+namespace Core.Data
 {
     public class Window
     {

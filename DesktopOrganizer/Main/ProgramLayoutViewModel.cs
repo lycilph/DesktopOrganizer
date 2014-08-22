@@ -1,4 +1,4 @@
-﻿using DesktopOrganizer.Data;
+﻿using Core.Data;
 using DesktopOrganizer.Utils;
 
 namespace DesktopOrganizer.Main

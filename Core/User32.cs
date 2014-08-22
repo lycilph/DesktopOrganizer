@@ -1,30 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using DesktopOrganizer.Data;
 
-namespace DesktopOrganizer.Utils
+namespace Core
 {
     public class User32
     {
+        public const uint LVM_FIRST = 0x1000;
+        public const uint LVM_GETITEMCOUNT = LVM_FIRST + 4;
+        public const uint LVM_GETITEMPOSITION = LVM_FIRST + 16;
+
         public delegate bool EnumWindowsProc(IntPtr wnd, int param);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.DLL")]
         public static extern bool EnumWindows(EnumWindowsProc enum_func, int param);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.DLL")]
         public static extern int GetWindowText(IntPtr wnd, StringBuilder sb, int max_count);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.DLL")]
         public static extern int GetWindowTextLength(IntPtr wnd);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.DLL")]
         public static extern bool IsWindowVisible(IntPtr wnd);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.DLL")]
         public static extern IntPtr GetShellWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindowEx(IntPtr wnd, IntPtr wnd_child_after, string lpszClass, string lpszWindow);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern int GetClassName(IntPtr wnd, StringBuilder lpClassName, int max_count);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr wnd, UInt32 msg, int wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern uint GetWindowThreadProcessId(IntPtr wnd, out uint process_id);
@@ -51,6 +61,13 @@ namespace DesktopOrganizer.Utils
             public System.Drawing.Point min_position;
             public System.Drawing.Point max_position;
             public System.Drawing.Rectangle normal_position;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct IconPoint
+        {
+            public int X;
+            public int Y;
         }
 
         public enum ShowWindowCommands

@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell.Utils;
 using DesktopOrganizer.Shell.ViewModels;
 using System;
@@ -33,6 +34,7 @@ namespace DesktopOrganizer
             var batch = new CompositionBatch();
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+            batch.AddExportedValue(ApplicationSettings.Load());
             batch.AddExportedValue(container);
 
             container.Compose(batch);
@@ -67,6 +69,14 @@ namespace DesktopOrganizer
             startup_tasks.Apply(s => s());
 
             DisplayRootViewFor<IShell>();
+        }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            base.OnExit(sender, e);
+
+            var settings = container.GetExportedValue<ApplicationSettings>();
+            ApplicationSettings.Save(settings);
         }
     }
 }
