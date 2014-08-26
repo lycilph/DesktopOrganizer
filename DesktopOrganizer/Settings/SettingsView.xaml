@@ -11,15 +11,21 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
         <Button Grid.Column="0"
+                Grid.Row="0"
                 x:Name="Back"
                 Style="{StaticResource MetroCircleButtonStyle}"
                 VerticalAlignment="Top">
             <Image Source="../Resources/appbar.arrow.left.png" Width="36"/>
         </Button>
 
-        <StackPanel Grid.Column="1" Margin="50,0">
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="50,0">
             <TextBlock Text="Settings" Style="{StaticResource HeaderTextBlockStyle}"/>
             <TextBlock Text="Processes to exclude (comma separated)" Margin="0,10,0,0"/>
             <TextBox x:Name="ExcludedProcesses" Margin="0,10,0,0"/>
@@ -28,6 +34,15 @@
                 <controls:ToggleSwitchButton x:Name="LaunchOnWindowsStart" Margin="10,0,0,0"/>
             </StackPanel>
             <Button x:Name="Reset" Content="Reset" Style="{StaticResource SubHeaderButtonStyle}" HorizontalAlignment="Left"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button x:Name="Ok" Content="Ok" Style="{StaticResource SubHeaderButtonStyle}" IsDefault="True"/>
+            <Button x:Name="Cancel" Content="Cancel" Margin="10,0,0,0" Style="{StaticResource SubHeaderButtonStyle}" IsCancel="True"/>
         </StackPanel>
     </Grid>
 </UserControl>

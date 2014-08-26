@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -8,17 +9,27 @@ namespace DesktopOrganizer.Dialogs
     {
         private readonly TaskCompletionSource<MessageDialogResult> tcs = new TaskCompletionSource<MessageDialogResult>();
 
-        public Task<MessageDialogResult> Task
-        {
-            get { return tcs.Task; }
-        }
+        public Task<MessageDialogResult> Task { get { return tcs.Task; } }
 
-        public HostDialog(bool show_cancel)
+        public Action CloseCallback { get { return () => tcs.SetResult(MessageDialogResult.Affirmative); } }
+
+        public HostDialog(DialogButtonOptions options)
         {
             InitializeComponent();
 
-            if (!show_cancel)
-                cancel_button.Visibility = Visibility.Collapsed;
+            switch (options)
+            {
+                case DialogButtonOptions.None:
+                    button_panel.Visibility = Visibility.Collapsed;
+                    break;
+                case DialogButtonOptions.Ok:
+                    cancel_button.Visibility = Visibility.Collapsed;
+                    break;
+                case DialogButtonOptions.OkAndCancel:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("options");
+            }
         }
 
         private void OkClick(object sender, RoutedEventArgs e)

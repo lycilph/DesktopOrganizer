@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace DesktopOrganizer.CaptureWindows
+namespace DesktopOrganizer.Capture
 {
     /// <summary>
     /// Interaction logic for WindowView.xaml

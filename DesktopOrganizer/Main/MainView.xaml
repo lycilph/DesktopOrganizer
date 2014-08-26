@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="635">
     <Grid x:Name="layout_root">
@@ -17,52 +18,42 @@
             <TextBlock Text="Actions" Style="{StaticResource HeaderTextBlockStyle}"/>
             <metro:DropDownButton Content="Capture"
                                   ItemsSource="{Binding CaptureCommands}"
-                                  Style="{StaticResource SubHeaderDropDownButtonStyle}">
+                                  Style="{StaticResource SubHeaderDropDownButtonStyle}"
+                                  Margin="0,25,0,0">
                 <metro:DropDownButton.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding Title}"
+                        <Button Content="{Binding Kind}"
                                 Style="{StaticResource SubHeaderButtonStyle}"
-                                cal:Message.Attach="[Click] = [Capture($dataContext)]"/>
+                                cal:Message.Attach="[Click] = [Capture($dataContext)]">
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContextMenu.IsOpen)" Storyboard.Target="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <system:Boolean>False</system:Boolean>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
                     </DataTemplate>
                 </metro:DropDownButton.ItemTemplate>
             </metro:DropDownButton>
-            <Button Content="Apply" Style="{StaticResource SubHeaderButtonStyle}"/>
-            <Button Content="Edit" Style="{StaticResource SubHeaderButtonStyle}"/>
-            <Button Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
+            <Button x:Name="Apply" Content="Apply" Style="{StaticResource SubHeaderButtonStyle}"/>
+            <Button x:Name="Edit"  Content="Edit" Style="{StaticResource SubHeaderButtonStyle}"/>
+            <Button x:Name="Delete" Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
         </StackPanel>
         
         <DockPanel Grid.Column="1" Margin="50">
             <TextBlock DockPanel.Dock="Top" Text="Layouts" Style="{StaticResource HeaderTextBlockStyle}"/>
-            <ListBox Margin="0,25,0,0"/>
+            <ListBox x:Name="Layouts"
+                     Margin="0,25,0,0"
+                     ItemContainerStyle="{StaticResource LayoutListBoxItem}"/>
         </DockPanel>
     </Grid>
-    
-    
-    <!--<metro:MetroAnimatedTabControl Margin="50" SelectedIndex="{Binding Index}">
-        <TabItem Header="Windows">
-            <DockPanel Margin="25">
-                <StackPanel DockPanel.Dock="Left">
-                    <Button x:Name="NewProgramLayout" Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <Button x:Name="ApplyProgramLayout" Content="Apply" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <Button x:Name="EditProgramLayout" Content="Edit" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <Button x:Name="DeleteProgramLayout" Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
-                </StackPanel>
-                <ListBox Margin="25,0" x:Name="ProgramLayouts"/>
-            </DockPanel>
-        </TabItem>
-        <TabItem Header="Icons">
-            <DockPanel Margin="25">
-                <StackPanel DockPanel.Dock="Left">
-                    <Button x:Name="NewIconLayout" Content="Capture" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <Button Content="Restore" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <Button Content="Delete" Style="{StaticResource SubHeaderButtonStyle}"/>
-                    <metro:DropDownButton Content="Capture"
-                                          ItemsSource="{Binding CaptureCommands}"
-                                          DisplayMemberPath="Title"
-                                          BorderBrush="Transparent"/>
-                </StackPanel>
-                <ListBox Margin="25,0" x:Name="IconLayouts"/>
-            </DockPanel>
-        </TabItem>
-    </metro:MetroAnimatedTabControl>-->
 </UserControl>

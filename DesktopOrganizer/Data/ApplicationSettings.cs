@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Core.Data;
 using DesktopOrganizer.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using ReactiveUI;
-using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Data
 {
@@ -20,8 +18,6 @@ namespace DesktopOrganizer.Data
 
         public List<string> ExcludedProcesses { get; set; }
         public bool SuppressShortcuts { get; set; }
-        //public ReactiveList<Layout<Program>> ProgramLayouts { get; set; }
-        //public ReactiveList<Layout<Icon>> IconLayouts { get; set; }
         public ReactiveList<ILayout> Layouts { get; private set; }
 
         [JsonIgnore]
@@ -33,8 +29,6 @@ namespace DesktopOrganizer.Data
 
         public ApplicationSettings()
         {
-            //ProgramLayouts = new ReactiveList<Layout<Program>>();
-            //IconLayouts = new ReactiveList<Layout<Icon>>();
             Layouts = new ReactiveList<ILayout>();
             keyboard_hook.KeyPressed += OnKeyPressed;
         }
@@ -62,17 +56,17 @@ namespace DesktopOrganizer.Data
             return key.GetValueNames().Any(n => n == info.ProductTitle);
         }
 
-        private static void SetLaunchOnWindowsStart(bool state)
+        private static void SetLaunchOnWindowsStart(bool enable)
         {
-            var is_launching = IsLaunchingOnWindowsStart();
-            if (state == is_launching) return;
+            var is_enabled = IsLaunchingOnWindowsStart();
+            if (enable == is_enabled) return;
 
             var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             if (key == null)
                 throw new Exception();
 
             var info = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            if (state)
+            if (enable)
                 key.SetValue(info.ProductTitle, Assembly.GetExecutingAssembly().Location, RegistryValueKind.String);
             else
                 key.DeleteValue(info.ProductTitle, true);
@@ -88,50 +82,35 @@ namespace DesktopOrganizer.Data
         public void ApplyShortcuts()
         {
             keyboard_hook.UnregisterAll();
-            //ProgramLayouts.Apply(l => keyboard_hook.RegisterHotKey(l.Shortcut));
+            Layouts.Where(l => !l.Shortcut.IsEmpty()).Apply(l => keyboard_hook.RegisterHotKey(l.Shortcut));
         }
 
-        //public void AddProgramLayout(Layout<Program> layout)
-        //{
-        //    ProgramLayouts.Add(layout);
-        //    keyboard_hook.RegisterHotKey(layout.Shortcut);
-        //}
+        public void Add(ILayout layout)
+        {
+            Layouts.Add(layout);
 
-        //public void RemoveProgramLayout(Layout<Program> layout)
-        //{
-        //    ProgramLayouts.Remove(layout);
-        //    keyboard_hook.UnregisterHotKey(layout.Shortcut);
-        //}
+            if (!layout.Shortcut.IsEmpty())
+                keyboard_hook.RegisterHotKey(layout.Shortcut);
+        }
 
-        //public void UpdateProgramLayout(Layout<Program> old_layout, Layout<Program> new_layout)
-        //{
-        //    var index = ProgramLayouts.IndexOf(old_layout);
-        //    ProgramLayouts[index] = new_layout;
+        public void Remove(ILayout layout)
+        {
+            Layouts.Remove(layout);
 
-        //    keyboard_hook.UnregisterHotKey(old_layout.Shortcut);
-        //    keyboard_hook.RegisterHotKey(new_layout.Shortcut);
-        //}
+            if (!layout.Shortcut.IsEmpty())
+                keyboard_hook.UnregisterHotKey(layout.Shortcut);
+        }
 
-        //public void AddIconLayout(Layout<Icon> layout)
-        //{
-        //    IconLayouts.Add(layout);
-        //    keyboard_hook.RegisterHotKey(layout.Shortcut);
-        //}
+        public void Update(ILayout new_layout, ILayout old_layout)
+        {
+            var index = Layouts.IndexOf(old_layout);
+            Layouts[index] = new_layout;
 
-        //public void RemoveIconLayout(Layout<Icon> layout)
-        //{
-        //    IconLayouts.Remove(layout);
-        //    keyboard_hook.UnregisterHotKey(layout.Shortcut);
-        //}
-
-        //public void UpdateIconLayout(Layout<Icon> old_layout, Layout<Icon> new_layout)
-        //{
-        //    var index = IconLayouts.IndexOf(old_layout);
-        //    IconLayouts[index] = new_layout;
-
-        //    keyboard_hook.UnregisterHotKey(old_layout.Shortcut);
-        //    keyboard_hook.RegisterHotKey(new_layout.Shortcut);
-        //}
+            if (!old_layout.Shortcut.IsEmpty())
+                keyboard_hook.UnregisterHotKey(old_layout.Shortcut);
+            if (!new_layout.Shortcut.IsEmpty())
+                keyboard_hook.RegisterHotKey(new_layout.Shortcut);
+        }
 
         private static string GetFilename()
         {
@@ -149,15 +128,15 @@ namespace DesktopOrganizer.Data
                 return new ApplicationSettings().Reset();
 
             var json = File.ReadAllText(filename);
-            var settings = JsonConvert.DeserializeObject<ApplicationSettings>(json);
+            var settings = JsonConvert.DeserializeObject<ApplicationSettings>(json, new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.Objects});
             settings.ApplyShortcuts();
             return settings;
         }
 
-        public static void Save(ApplicationSettings settings)
+        public void Save()
         {
             var filename = GetFilename();
-            var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.Objects});
             File.WriteAllText(filename, json);
         }
     }

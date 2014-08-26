@@ -2,6 +2,8 @@
 {
     public class CaptureCommand
     {
-        public string Title { get; set; }
+        public enum CaptureKind { Windows, Icons }
+
+        public CaptureKind Kind { get; set; }
     }
 }

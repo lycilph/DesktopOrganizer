@@ -1,7 +1,7 @@
 using Caliburn.Micro;
 using DesktopOrganizer.Data;
+using DesktopOrganizer.Shell;
 using DesktopOrganizer.Shell.Utils;
-using DesktopOrganizer.Shell.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -28,7 +28,7 @@ namespace DesktopOrganizer
 
         protected override void Configure()
         {
-            var catalog = new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>());
+            var catalog = new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x)));
             container = new CompositionContainer(catalog);
 
             var batch = new CompositionBatch();
@@ -76,7 +76,7 @@ namespace DesktopOrganizer
             base.OnExit(sender, e);
 
             var settings = container.GetExportedValue<ApplicationSettings>();
-            ApplicationSettings.Save(settings);
+            settings.Save();
         }
     }
 }

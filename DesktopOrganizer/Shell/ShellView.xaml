@@ -1,4 +1,4 @@
-<metro:MetroWindow x:Class="DesktopOrganizer.Shell.Views.ShellView"
+<metro:MetroWindow x:Class="DesktopOrganizer.Shell.ShellView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"

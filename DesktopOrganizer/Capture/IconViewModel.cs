@@ -4,7 +4,7 @@ using Core.Data;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
 
-namespace DesktopOrganizer.CaptureIcons
+namespace DesktopOrganizer.Capture
 {
     public class IconViewModel : ItemViewModelBase<Icon>
     {
@@ -19,6 +19,7 @@ namespace DesktopOrganizer.CaptureIcons
 
         public string Info { get; set; }
 
+        public IconViewModel() : this(null) { }
         public IconViewModel(Icon icon) : base(icon)
         {
             Info = string.Format("Position [{0},{1}]", icon.X, icon.Y);

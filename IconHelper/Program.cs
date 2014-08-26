@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.IO.Pipes;
+using System.Windows;
 using Core;
+using Core.Data;
 using Newtonsoft.Json;
 
 namespace IconHelper
@@ -17,16 +19,28 @@ namespace IconHelper
                 var sr = new StreamReader(client);
 
                 var input = sr.ReadLine();
-                if (input == "get")
+                switch (input)
                 {
-                    var icons = IconManager.GetIconsPositions();
-                    var output = JsonConvert.SerializeObject(icons);
-                    sw.WriteLine(output);
-                    sw.Flush();
-                    client.WaitForPipeDrain();    
+                    case "get":
+                        {
+                            var icons = IconManager.GetIconsPositions();
+                            var output = JsonConvert.SerializeObject(icons);
+                            sw.WriteLine(output);
+                            sw.Flush();
+                            client.WaitForPipeDrain();
+                        }
+                        break;
+                    case "set":
+                        {
+                            var json = sr.ReadLine();
+                            var layout = JsonConvert.DeserializeObject<Layout<Icon>>(json);
+                            IconManager.ApplyLayout(layout);
+                        }
+                        break;
+                    default:
+                        MessageBox.Show(string.Format("Unknown command [{0}]", input));
+                        break;
                 }
-                else
-                    throw new InvalidDataException();
             }
         }
     }

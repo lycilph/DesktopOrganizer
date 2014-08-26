@@ -8,7 +8,7 @@ using Core.Data;
 using DesktopOrganizer.Utils;
 using ReactiveUI;
 
-namespace DesktopOrganizer.CaptureWindows
+namespace DesktopOrganizer.Capture
 {
     public class ProgramViewModel : ItemViewModelBase<Program>
     {
@@ -22,6 +22,8 @@ namespace DesktopOrganizer.CaptureWindows
         public string Info { get; set; }
 
         public List<WindowViewModel> Windows { get; set; }
+
+        public ProgramViewModel() : this(null) { }
 
         public ProgramViewModel(Program program) : base(program)
         {

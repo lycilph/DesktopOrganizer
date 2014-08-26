@@ -133,7 +133,6 @@
         <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource SubHeaderFontSize}" />
         <Setter Property="FontFamily" Value="{DynamicResource HeaderFontFamily}" />
-        <Setter Property="cal:Action.TargetWithoutContext" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type metro:DropDownButton}">
@@ -160,7 +159,6 @@
                             <Rectangle Name="PART_Rectangle"
                                        Height="6"
                                        Width="10"
-                                       Margin="0,0,3,0"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Fill="{DynamicResource AccentColorBrush}">
@@ -198,7 +196,6 @@
                                          cal:Action.TargetWithoutContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget.Tag}"/>
                         </Button.ContextMenu>
                     </Button>
-
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="PART_Rectangle" Property="Fill" Value="{DynamicResource GrayBrush2}" />
@@ -211,4 +208,55 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!-- ListBoxItem -->
+
+    <Style x:Key="LayoutListBoxItem" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MetroListBoxItem}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <DockPanel>
+                        <Rectangle x:Name="Rectangle"
+                                   DockPanel.Dock="Left"
+                                   VerticalAlignment="Stretch"
+                                   Fill="Transparent"
+                                   Width="5"/>
+                        <ContentPresenter Margin="5,0,0,0"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource AccentColorBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource AccentColorBrush4}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush2}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource GrayBrush2}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource AccentColorBrush2}"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Core.Data;
-using DesktopOrganizer.Data;
 
 namespace DesktopOrganizer.Resources
 {

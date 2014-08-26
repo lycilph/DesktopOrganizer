@@ -1,8 +1,8 @@
 ﻿namespace DesktopOrganizer.Capture
 {
-    public partial class CaptureView
+    public partial class IconView
     {
-        public CaptureView()
+        public IconView()
         {
             InitializeComponent();
         }

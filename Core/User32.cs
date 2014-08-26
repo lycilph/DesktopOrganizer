@@ -8,6 +8,7 @@ namespace Core
     {
         public const uint LVM_FIRST = 0x1000;
         public const uint LVM_GETITEMCOUNT = LVM_FIRST + 4;
+        public const uint LVM_SETITEMPOSITION = LVM_FIRST + 15;
         public const uint LVM_GETITEMPOSITION = LVM_FIRST + 16;
 
         public delegate bool EnumWindowsProc(IntPtr wnd, int param);
@@ -76,6 +77,11 @@ namespace Core
             Normal = 1,
             Minimized = 2,
             Maximized = 3,
+        }
+
+        public static IntPtr MakeLParam(int low, int high)
+        {
+            return (IntPtr)(((short)high << 16) | (low & 0xffff));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using Caliburn.Micro;
 using Core;
 using Core.Data;
+using DesktopOrganizer.Data;
 using Window = Core.Data.Window;
 
 namespace DesktopOrganizer.Utils
@@ -54,8 +55,11 @@ namespace DesktopOrganizer.Utils
             return windows;
         }
 
-        public static IEnumerable<Program> GetPrograms(Predicate<Window> filter)
+        public static IEnumerable<Program> GetPrograms()
         {
+            var application_settings = IoC.Get<ApplicationSettings>();
+            Predicate<Window> filter = (w => application_settings.ExcludedProcesses.Contains(w.ProcessName, StringComparer.InvariantCultureIgnoreCase));
+
             return GetOpenWindows()
                    .Where(w => !filter(w)).GroupBy(w => w.ProcessName)
                    .Select(g => new Program

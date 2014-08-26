@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 
-namespace DesktopOrganizer.Shell.Views
+namespace DesktopOrganizer.Shell
 {
     public partial class ShellView
     {

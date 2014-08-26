@@ -119,36 +119,33 @@
     <Compile Include="About\AboutViewModel.cs" />
     <Compile Include="About\Package.cs" />
     <Compile Include="ApplicationBootstrapper.cs" />
-    <Compile Include="CaptureIcons\CaptureIconsView.xaml.cs">
-      <DependentUpon>CaptureIconsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CaptureIcons\CaptureIconsViewModel.cs" />
-    <Compile Include="CaptureIcons\IconView.xaml.cs">
+    <Compile Include="Capture\IconView.xaml.cs">
       <DependentUpon>IconView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CaptureIcons\IconViewModel.cs" />
-    <Compile Include="CaptureWindows\CaptureWindowsView.xaml.cs">
-      <DependentUpon>CaptureWindowsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CaptureWindows\CaptureWindowsViewModel.cs" />
-    <Compile Include="CaptureWindows\ProgramView.xaml.cs">
+    <Compile Include="Capture\IconViewModel.cs" />
+    <Compile Include="Capture\ProgramView.xaml.cs">
       <DependentUpon>ProgramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CaptureWindows\ProgramViewModel.cs" />
-    <Compile Include="CaptureWindows\WindowView.xaml.cs">
+    <Compile Include="Capture\ProgramViewModel.cs" />
+    <Compile Include="Capture\WindowView.xaml.cs">
       <DependentUpon>WindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CaptureWindows\WindowViewModel.cs" />
+    <Compile Include="Capture\WindowViewModel.cs" />
     <Compile Include="Capture\CaptureView.xaml.cs">
       <DependentUpon>CaptureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Capture\CaptureViewModel.cs" />
     <Compile Include="Data\ApplicationSettings.cs" />
+    <Compile Include="Dialogs\DialogButtonOptions.cs" />
     <Compile Include="Dialogs\DialogController.cs" />
     <Compile Include="Dialogs\HostDialog.xaml.cs">
       <DependentUpon>HostDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main\CaptureCommand.cs" />
+    <Compile Include="Main\IconLayoutView.xaml.cs">
+      <DependentUpon>IconLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\ILayoutViewModel.cs" />
     <Compile Include="Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -156,6 +153,7 @@
     <Compile Include="Main\ProgramLayoutView.xaml.cs">
       <DependentUpon>ProgramLayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main\IconLayoutViewModel.cs" />
     <Compile Include="Main\ProgramLayoutViewModel.cs" />
     <Compile Include="Resources\ShortcutControl.xaml.cs">
       <DependentUpon>ShortcutControl.xaml</DependentUpon>
@@ -164,14 +162,15 @@
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
+    <Compile Include="Shell\ShellMessage.cs" />
     <Compile Include="Shell\Utils\InputBindingParser.cs" />
     <Compile Include="Shell\Utils\InputBindingTrigger.cs" />
     <Compile Include="Shell\Utils\IWindowCommand.cs" />
     <Compile Include="Shell\Utils\StartupTasks.cs" />
     <Compile Include="Shell\Utils\WindowCommand.cs" />
-    <Compile Include="Shell\ViewModels\IShell.cs" />
-    <Compile Include="Shell\ViewModels\ShellViewModel.cs" />
-    <Compile Include="Shell\Views\ShellView.xaml.cs">
+    <Compile Include="Shell\IShell.cs" />
+    <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -191,23 +190,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CaptureIcons\CaptureIconsView.xaml">
+    <Page Include="Capture\IconView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CaptureIcons\IconView.xaml">
+    <Page Include="Capture\ProgramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CaptureWindows\CaptureWindowsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CaptureWindows\ProgramView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CaptureWindows\WindowView.xaml">
+    <Page Include="Capture\WindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +209,10 @@
     <Page Include="Dialogs\HostDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Main\IconLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Main\MainView.xaml">
       <SubType>Designer</SubType>
@@ -239,7 +234,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Views\ShellView.xaml">
+    <Page Include="Shell\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

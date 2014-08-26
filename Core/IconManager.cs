@@ -104,5 +104,19 @@ namespace Core
             var obj = KnownFolders.Desktop.SingleOrDefault(i => i.GetDisplayName(DisplayNameType.Default) == item);
             return obj != null ? obj.Thumbnail.SmallBitmapSource : null;
         }
+
+        public static void ApplyLayout(Layout<Icon> layout)
+        {
+            var wnd = GetDesktopWindow();
+            var names = GetIconNames(wnd);
+
+            foreach (var item in layout.Items)
+            {
+                var index = names.IndexOf(item.Name);
+                if (index == -1) continue;
+
+                User32.SendMessage(wnd, User32.LVM_SETITEMPOSITION, index, User32.MakeLParam(item.X, item.Y));
+            }
+        }
     }
 }

@@ -16,7 +16,8 @@
             
             <ContentControl cal:View.Model="{Binding}"/>
 
-            <StackPanel Grid.Row="1"
+            <StackPanel x:Name="button_panel"
+                        Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Height="85">

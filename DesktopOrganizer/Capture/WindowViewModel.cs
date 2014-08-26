@@ -1,7 +1,7 @@
 ﻿using Core.Data;
 using DesktopOrganizer.Utils;
 
-namespace DesktopOrganizer.CaptureWindows
+namespace DesktopOrganizer.Capture
 {
     public class WindowViewModel : ItemViewModelBase<Window>
     {
