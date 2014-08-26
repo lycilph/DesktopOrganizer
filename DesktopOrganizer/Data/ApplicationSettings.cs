@@ -9,6 +9,7 @@ using DesktopOrganizer.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using ReactiveUI;
+using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Data
 {
@@ -35,15 +36,15 @@ namespace DesktopOrganizer.Data
 
         private void OnKeyPressed(object sender, KeyPressedEventArgs args)
         {
-            //if (SuppressShortcuts) return;
+            if (SuppressShortcuts) return;
 
-            //var window_layout = ProgramLayouts.SingleOrDefault(l => l.Shortcut.Match(args.Modifier, args.GetWpfKey()));
-            //if (window_layout != null)
-            //    WindowManager.ApplyLayout(window_layout);
+            var layout = Layouts.SingleOrDefault(l => l.Shortcut.Match(args.Modifier, args.GetWpfKey()));
+            if (layout == null) return;
 
-            //var icon_layout = IconLayouts.SingleOrDefault(l => l.Shortcut.Match(args.Modifier, args.GetWpfKey()));
-            //if (icon_layout != null)
-            //    IconManagerWrapper.ApplyLayout(icon_layout);
+            if (layout is Layout<Program>)
+                WindowManager.ApplyLayout(layout as Layout<Program>);
+            if (layout is Layout<Icon>)
+                IconManagerWrapper.ApplyLayout(layout as Layout<Icon>);
         }
 
         private static bool IsLaunchingOnWindowsStart()
