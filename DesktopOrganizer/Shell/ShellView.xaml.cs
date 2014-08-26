@@ -13,7 +13,7 @@ namespace DesktopOrganizer.Shell
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void OnStateChanged(object sender, EventArgs e)
@@ -42,18 +42,18 @@ namespace DesktopOrganizer.Shell
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
-            //var vm = DataContext as IShell;
-            //if (vm == null) return;
+            var vm = DataContext as IShell;
+            if (vm == null) return;
 
-            //if (vm.Exiting)
-            //{
-            //    TaskbarIcon.Visibility = Visibility.Hidden;
-            //}
-            //else
-            //{
-            //    e.Cancel = true;
-            //    WindowState = WindowState.Minimized;
-            //}
+            if (vm.Exiting)
+            {
+                TaskbarIcon.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                e.Cancel = true;
+                WindowState = WindowState.Minimized;
+            }
         }
     }
 }
