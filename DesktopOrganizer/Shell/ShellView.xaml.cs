@@ -6,9 +6,13 @@ namespace DesktopOrganizer.Shell
 {
     public partial class ShellView
     {
+        private readonly WindowStyle default_window_style;
+
         public ShellView()
         {
             InitializeComponent();
+
+            default_window_style = WindowStyle;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -22,11 +26,13 @@ namespace DesktopOrganizer.Shell
             {
                 ShowInTaskbar = false;
                 TaskbarIcon.Visibility = Visibility.Visible;
+                WindowStyle = WindowStyle.ToolWindow;
             }
             else
             {
                 ShowInTaskbar = true;
                 TaskbarIcon.Visibility = Visibility.Hidden;
+                WindowStyle = default_window_style;
             }
         }
 
