@@ -184,8 +184,11 @@
     <Compile Include="Utils\KeyboardHook.cs" />
     <Compile Include="Utils\ProcessExtensions.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
+    <Compile Include="Utils\TaskScheduler.cs" />
+    <Compile Include="Utils\TempFile.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
     <Compile Include="Utils\WindowManager.cs" />
+    <Compile Include="Utils\XmlNodeListExtensions.cs" />
     <Page Include="About\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -281,7 +284,11 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Startup.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

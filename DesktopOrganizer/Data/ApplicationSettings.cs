@@ -6,7 +6,6 @@ using System.Reflection;
 using Caliburn.Micro;
 using Core.Data;
 using DesktopOrganizer.Utils;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WindowManager = DesktopOrganizer.Utils.WindowManager;
@@ -15,6 +14,8 @@ namespace DesktopOrganizer.Data
 {
     public class ApplicationSettings
     {
+        private const string TaskName = @"LyCilph\DesktopOrganizerStart";
+        private const string TaskInputFile = "Startup.xml";
         private readonly KeyboardHook keyboard_hook = new KeyboardHook();
 
         public List<string> ExcludedProcesses { get; set; }
@@ -24,7 +25,7 @@ namespace DesktopOrganizer.Data
         [JsonIgnore]
         public bool LaunchOnWindowsStart
         {
-            get { return IsLaunchingOnWindowsStart(); }
+            get { return TaskScheduler.HasTask(TaskName); }
             set { SetLaunchOnWindowsStart(value); }
         }
 
@@ -47,30 +48,15 @@ namespace DesktopOrganizer.Data
                 IconManagerWrapper.ApplyLayout(layout as Layout<Icon>);
         }
 
-        private static bool IsLaunchingOnWindowsStart()
+        private void SetLaunchOnWindowsStart(bool enable)
         {
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false);
-            if (key == null)
-                throw new Exception();
-
-            var info = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            return key.GetValueNames().Any(n => n == info.ProductTitle);
-        }
-
-        private static void SetLaunchOnWindowsStart(bool enable)
-        {
-            var is_enabled = IsLaunchingOnWindowsStart();
-            if (enable == is_enabled) return;
-
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            if (key == null)
-                throw new Exception();
-
-            var info = new AssemblyInfo(Assembly.GetExecutingAssembly());
+            var has_task = LaunchOnWindowsStart;
+            if (enable == has_task) return;
+            
             if (enable)
-                key.SetValue(info.ProductTitle, Assembly.GetExecutingAssembly().Location, RegistryValueKind.String);
+                TaskScheduler.CreateTask(TaskName, TaskInputFile);
             else
-                key.DeleteValue(info.ProductTitle, true);
+                TaskScheduler.DeleteTask(TaskName);
         }
 
         public ApplicationSettings Reset()
