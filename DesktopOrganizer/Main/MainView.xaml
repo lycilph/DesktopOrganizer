@@ -53,7 +53,8 @@
             <TextBlock DockPanel.Dock="Top" Text="Layouts" Style="{StaticResource HeaderTextBlockStyle}"/>
             <ListBox x:Name="Layouts"
                      Margin="0,25,0,0"
-                     ItemContainerStyle="{StaticResource LayoutListBoxItem}"/>
+                     ItemContainerStyle="{StaticResource LayoutListBoxItem}"
+                     cal:Message.Attach="[Event MouseDoubleClick] = [Edit]"/>
         </DockPanel>
     </Grid>
 </UserControl>

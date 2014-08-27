@@ -12,7 +12,7 @@ namespace DesktopOrganizer.Capture
         public BitmapSource Icon
         {
             get { return _Icon; }
-            set { this.RaiseAndSetIfChanged(ref _Icon, value); }
+            private set { this.RaiseAndSetIfChanged(ref _Icon, value); }
         }
 
         public string Title { get { return AssociatedObject.Name; } }

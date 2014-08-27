@@ -40,6 +40,11 @@ namespace Core.Data
             return Modifiers == modifiers && Key == key;
         }
 
+        public bool Match(Shortcut sc)
+        {
+            return Match(sc.Modifiers, sc.Key);
+        }
+
         public override string ToString()
         {
             if (Modifiers == ModifierKeys.None && Key == Key.None)

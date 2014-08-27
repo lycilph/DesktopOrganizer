@@ -72,5 +72,10 @@ namespace DesktopOrganizer.Resources
                        .Skip(1)
                        .Count(Keyboard.IsKeyDown);
         }
+
+        private void OnClearClick(object sender, RoutedEventArgs e)
+        {
+            Shortcut = new Shortcut();
+        }
     }
 }

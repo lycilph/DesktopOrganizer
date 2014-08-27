@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="Main\IconLayoutViewModel.cs" />
     <Compile Include="Main\ProgramLayoutViewModel.cs" />
+    <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
     <Compile Include="Resources\ShortcutControl.xaml.cs">
       <DependentUpon>ShortcutControl.xaml</DependentUpon>
     </Compile>
@@ -288,6 +289,12 @@
     <None Include="Startup.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\appbar.clear.reflect.horizontal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\appbar.alert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

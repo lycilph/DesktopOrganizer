@@ -17,7 +17,9 @@ namespace DesktopOrganizer.Shell
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+#if !DEBUG
             WindowState = WindowState.Minimized;
+#endif
         }
 
         private void OnStateChanged(object sender, EventArgs e)
@@ -48,6 +50,7 @@ namespace DesktopOrganizer.Shell
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
+#if !DEBUG
             var vm = DataContext as IShell;
             if (vm == null) return;
 
@@ -60,6 +63,7 @@ namespace DesktopOrganizer.Shell
                 e.Cancel = true;
                 WindowState = WindowState.Minimized;
             }
+#endif
         }
     }
 }

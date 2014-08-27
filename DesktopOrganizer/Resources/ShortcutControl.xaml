@@ -11,6 +11,11 @@
                  PreviewKeyDown="OnPreviewKeyDown"
                  PreviewKeyUp="OnPreviewKeyUp"
                  Style="{StaticResource ContentTextBoxStyle}"/>
+        <Button Height="{Binding ElementName=shortcut_textbox, Path=ActualHeight}"
+                Padding="0"
+                Click="OnClearClick">
+            <Image Source="appbar.clear.reflect.horizontal.png"/>
+        </Button>
         <ContentControl Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Content="{Binding Shortcut}"/>

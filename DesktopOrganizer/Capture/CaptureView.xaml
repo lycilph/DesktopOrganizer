@@ -7,6 +7,10 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <resources:BooleanToVisibilityConverter x:Key="VisibilityConverter" TrueState="Collapsed" FalseState="Visible"/>
+    </UserControl.Resources>
+    
     <Grid Margin="50">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -34,11 +38,16 @@
                          Style="{StaticResource SubHeaderTextBoxStyle}"/>
             </DockPanel>
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,10,0,0">
-                <TextBlock DockPanel.Dock="Left"
+                <TextBlock x:Name="shortcut_textblock"
+                           DockPanel.Dock="Left"
                            Text="Shortcut"
                            VerticalAlignment="Center"
                            Style="{StaticResource SubHeaderTextBlockStyle}"/>
                 <resources:ShortcutControl Margin="10,0,0,0" Shortcut="{Binding Shortcut}"/>
+                <Image Source="../Resources/appbar.alert.png"
+                       ToolTip="Shortcut is already used!"
+                       Height="{Binding ElementName=shortcut_textblock, Path=ActualHeight}"
+                       Visibility="{Binding CanOk, Converter={StaticResource VisibilityConverter}}"/>
             </StackPanel>
             <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="0,10,0,0">
                 <TextBlock x:Name="ItemsTitle"

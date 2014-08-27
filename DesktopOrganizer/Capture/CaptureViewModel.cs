@@ -51,15 +51,20 @@ namespace DesktopOrganizer.Capture
             set { this.RaiseAndSetIfChanged(ref _Items, value); }
         }
 
+        private readonly ObservableAsPropertyHelper<bool> _CanOk;
+        public bool CanOk { get { return _CanOk.Value; } }
+
         public CaptureViewModel(Layout<TM> layout)
         {
             this.layout = layout;
-
             application_settings = IoC.Get<ApplicationSettings>();
 
             _LayoutName = layout.Name;
             _Shortcut = layout.Shortcut;
             _Items = layout.Items.Select(i => (TVM)Activator.CreateInstance(typeof(TVM), i)).ToReactiveList();
+
+            _CanOk = this.WhenAny(x => x.Shortcut, x => !application_settings.IsShortcutUsed(x.Value))
+                         .ToProperty(this, x => x.CanOk);
         }
 
         protected override void OnActivate()
