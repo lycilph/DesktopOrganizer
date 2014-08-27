@@ -1,11 +1,13 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using NLog;
 
 namespace DesktopOrganizer.Shell
 {
     public partial class ShellView
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly WindowStyle default_window_style;
 
         public ShellView()
@@ -24,6 +26,8 @@ namespace DesktopOrganizer.Shell
 
         private void OnStateChanged(object sender, EventArgs e)
         {
+            logger.Trace("State changed: " + WindowState);
+
             if (WindowState == WindowState.Minimized)
             {
                 ShowInTaskbar = false;

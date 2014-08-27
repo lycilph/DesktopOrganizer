@@ -8,12 +8,15 @@ using DesktopOrganizer.Data;
 using DesktopOrganizer.Dialogs;
 using DesktopOrganizer.Shell;
 using DesktopOrganizer.Utils;
+using NLog;
 using ReactiveUI;
+using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer.Capture
 {
     public class CaptureViewModel<TM, TVM> : ViewModelBase where TVM : ItemViewModelBase<TM>, new()
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly ApplicationSettings application_settings;
         private readonly Layout<TM> layout;
 
@@ -69,6 +72,8 @@ namespace DesktopOrganizer.Capture
 
         protected override void OnActivate()
         {
+            logger.Trace("Activate ({0})", ItemsTitle);
+
             base.OnActivate();
             application_settings.SuppressShortcuts = true;
 
@@ -78,6 +83,8 @@ namespace DesktopOrganizer.Capture
 
         protected override void OnDeactivate(bool close)
         {
+            logger.Trace("Deactivate ({0})", ItemsTitle);
+
             base.OnDeactivate(close);
 
             if (close)
@@ -101,6 +108,8 @@ namespace DesktopOrganizer.Capture
 
         public void Ok()
         {
+            logger.Trace("Accepted ({0} - {1})", ItemsTitle, LayoutName);
+
             var new_layout = new Layout<TM>
             {
                 Name = LayoutName,

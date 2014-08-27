@@ -5,13 +5,16 @@ using Caliburn.Micro;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell;
 using DesktopOrganizer.Utils;
+using NLog;
 using ReactiveUI;
+using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer.Settings
 {
     [Export(typeof(SettingsViewModel))]
     public class SettingsViewModel : ViewModelBase
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IEventAggregator event_aggregator;
         private readonly ApplicationSettings application_settings;
 
@@ -44,17 +47,23 @@ namespace DesktopOrganizer.Settings
 
         protected override void OnActivate()
         {
+            logger.Trace("Activate");
+
             base.OnActivate();
             Initialize();
         }
 
         public void Back()
         {
+            logger.Trace("Back");
+
             event_aggregator.PublishOnCurrentThread(ShellMessage.BackMessage());
         }
 
         public void Ok()
         {
+            logger.Trace("Accepted");
+
             application_settings.ExcludedProcesses = ExcludedProcesses.Split(new[] { "," }, StringSplitOptions.None).Select(s => s.Trim()).ToList();
             application_settings.LaunchOnWindowsStart = LaunchOnWindowsStart;
             Back();
@@ -62,11 +71,15 @@ namespace DesktopOrganizer.Settings
 
         public void Cancel()
         {
+            logger.Trace("Cancel");
+
             Back();
         }
 
         public void Reset()
         {
+            logger.Trace("Reset");
+
             application_settings.Reset();
             Initialize();
         }

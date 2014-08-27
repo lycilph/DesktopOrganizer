@@ -12,7 +12,7 @@
                    StateChanged="OnStateChanged"
                    Closing="OnClosing">
     
-    <metro:MetroWindow.WindowCommands>
+    <metro:MetroWindow.RightWindowCommands>
         <metro:WindowCommands>
             <ItemsControl x:Name="ShellCommands">
                 <ItemsControl.ItemsPanel>
@@ -29,7 +29,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </metro:WindowCommands>
-    </metro:MetroWindow.WindowCommands>
+    </metro:MetroWindow.RightWindowCommands>
     
     <Grid>
         <metro:TransitioningContentControl x:Name="ActiveItem"/>

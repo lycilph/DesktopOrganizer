@@ -9,16 +9,19 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Windows;
+using NLog;
+using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer
 {
     public class ApplicationBootstrapper : BootstrapperBase
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private CompositionContainer container;
 
         static ApplicationBootstrapper()
         {
-            LogManager.GetLog = type => new DebugLog(type);
+            Caliburn.Micro.LogManager.GetLog = type => new DebugLog(type);
         }
 
         public ApplicationBootstrapper()
@@ -28,6 +31,8 @@ namespace DesktopOrganizer
 
         protected override void Configure()
         {
+            logger.Trace("Configure");
+
             var catalog = new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x)));
             container = new CompositionContainer(catalog);
 
@@ -63,6 +68,8 @@ namespace DesktopOrganizer
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            logger.Trace("Startup");
+
             var startup_tasks = GetAllInstances(typeof(StartupTask))
                                 .Cast<ExportedDelegate>()
                                 .Select(exportedDelegate => (StartupTask)exportedDelegate.CreateDelegate(typeof(StartupTask)));
@@ -73,6 +80,8 @@ namespace DesktopOrganizer
 
         protected override void OnExit(object sender, EventArgs e)
         {
+            logger.Trace("Exit");
+
             base.OnExit(sender, e);
 
             var settings = container.GetExportedValue<ApplicationSettings>();

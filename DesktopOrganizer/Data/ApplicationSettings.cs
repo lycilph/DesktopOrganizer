@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,13 +6,16 @@ using Caliburn.Micro;
 using Core.Data;
 using DesktopOrganizer.Utils;
 using Newtonsoft.Json;
+using NLog;
 using ReactiveUI;
+using LogManager = NLog.LogManager;
 using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Data
 {
     public class ApplicationSettings
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private const string TaskName = @"LyCilph\DesktopOrganizerStart";
         private const string TaskInputFile = "Startup.xml";
         private readonly KeyboardHook keyboard_hook = new KeyboardHook();
@@ -42,6 +44,8 @@ namespace DesktopOrganizer.Data
             var layout = Layouts.SingleOrDefault(l => l.Shortcut.Match(args.Modifier, args.GetWpfKey()));
             if (layout == null) return;
 
+            logger.Trace("Apply layout {0} [{1} - {2}]", layout.Name, layout.Shortcut, layout.GetType());
+
             if (layout is Layout<Program>)
                 WindowManager.ApplyLayout(layout as Layout<Program>);
             if (layout is Layout<Icon>)
@@ -61,6 +65,8 @@ namespace DesktopOrganizer.Data
 
         public ApplicationSettings Reset()
         {
+            logger.Trace("Reset");
+
             ExcludedProcesses = new List<string> {"clover", "buildnotificationapp"};
             SetLaunchOnWindowsStart(false);
             return this;
@@ -115,6 +121,8 @@ namespace DesktopOrganizer.Data
 
         public static ApplicationSettings Load()
         {
+            logger.Trace("Load");
+
             var filename = GetFilename();
             if (!File.Exists(filename))
                 return new ApplicationSettings().Reset();
@@ -127,6 +135,8 @@ namespace DesktopOrganizer.Data
 
         public void Save()
         {
+            logger.Trace("Save");
+
             var filename = GetFilename();
             var json = JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.Objects});
             File.WriteAllText(filename, json);
