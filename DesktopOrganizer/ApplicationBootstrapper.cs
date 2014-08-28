@@ -27,6 +27,8 @@ namespace DesktopOrganizer
         public ApplicationBootstrapper()
         {
             Initialize();
+
+            Application.Current.SessionEnding += CurrentOnSessionEnding;
         }
 
         protected override void Configure()
@@ -81,9 +83,19 @@ namespace DesktopOrganizer
         protected override void OnExit(object sender, EventArgs e)
         {
             logger.Trace("Exit");
-
             base.OnExit(sender, e);
+            SaveSettings();
+        }
 
+        private void CurrentOnSessionEnding(object sender, SessionEndingCancelEventArgs sessionEndingCancelEventArgs)
+        {
+            logger.Trace("Session Ending");
+            SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            logger.Trace("Saving Settings");
             var settings = container.GetExportedValue<ApplicationSettings>();
             settings.Save();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -9,6 +10,8 @@ namespace DesktopOrganizer.Utils
 {
     public static class TaskScheduler
     {
+        private static readonly List<string> states = new List<string> {"ready", "running"};
+
         public static bool HasTask(string name)
         {
             var p = Process.Start(new ProcessStartInfo
@@ -28,7 +31,7 @@ namespace DesktopOrganizer.Utils
             var columns = output.Split(new[] { ',' });
             var task_output = columns[0].Replace("\"", "").Trim().ToLowerInvariant();
             var task_status = columns[2].Replace("\"", "").Trim().ToLowerInvariant();
-            return (task_output == name.ToLowerInvariant() && task_status == "ready");
+            return (task_output == name.ToLowerInvariant() && states.Contains(task_status));
         }
 
         public static void CreateTask(string name, string input_file)
