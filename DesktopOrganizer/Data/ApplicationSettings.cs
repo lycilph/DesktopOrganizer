@@ -78,9 +78,9 @@ namespace DesktopOrganizer.Data
             Layouts.Where(l => !l.Shortcut.IsEmpty()).Apply(l => keyboard_hook.RegisterHotKey(l.Shortcut));
         }
 
-        public bool IsShortcutUsed(Shortcut sc)
+        public bool IsShortcutUsed(Shortcut sc, ILayout layout)
         {
-            return !sc.IsEmpty() && Layouts.Any(l => l.Shortcut.Match(sc));
+            return !sc.IsEmpty() && Layouts.Any(l => l != layout && l.Shortcut.Match(sc));
         }
 
         public void Add(ILayout layout)

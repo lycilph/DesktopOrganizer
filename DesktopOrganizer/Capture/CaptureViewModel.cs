@@ -66,7 +66,7 @@ namespace DesktopOrganizer.Capture
             _Shortcut = layout.Shortcut;
             _Items = layout.Items.Select(i => (TVM)Activator.CreateInstance(typeof(TVM), i)).ToReactiveList();
 
-            _CanOk = this.WhenAny(x => x.Shortcut, x => !application_settings.IsShortcutUsed(x.Value))
+            _CanOk = this.WhenAny(x => x.Shortcut, x => !application_settings.IsShortcutUsed(x.Value, layout))
                          .ToProperty(this, x => x.CanOk);
         }
 
