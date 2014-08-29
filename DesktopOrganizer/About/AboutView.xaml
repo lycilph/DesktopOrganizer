@@ -26,7 +26,7 @@
         <StackPanel Grid.Row="1" Grid.Column="0">
             <TextBlock Text="{Binding Name, StringFormat=Made By: {0}}" FontSize="{StaticResource SubHeaderFontSize}"/>
             <TextBlock Text="{Binding Version, StringFormat=Version: {0}}" FontSize="{StaticResource SubHeaderFontSize}"/>
-            <Image Source="../../Resources/organization.png" HorizontalAlignment="Center" Width="50" Margin="50"/>
+            <Image Source="../../Resources/appbar.lamp.desk.variant.png" HorizontalAlignment="Center" Width="100" Margin="50"/>
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0">

@@ -29,13 +29,13 @@ namespace Core
         public static extern IntPtr GetShellWindow();
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindowEx(IntPtr wnd, IntPtr wnd_child_after, string lpszClass, string lpszWindow);
+        public static extern IntPtr FindWindowEx(IntPtr wnd, IntPtr wnd_child_after, string @class, string window);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern int GetClassName(IntPtr wnd, StringBuilder lpClassName, int max_count);
+        public static extern int GetClassName(IntPtr wnd, StringBuilder class_name, int max_count);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr wnd, UInt32 msg, int wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr wnd, UInt32 msg, int w_param, IntPtr l_param);
 
         [DllImport("user32.dll")]
         public static extern uint GetWindowThreadProcessId(IntPtr wnd, out uint process_id);
@@ -47,7 +47,7 @@ namespace Core
         public static extern bool SetWindowPlacement(IntPtr wnd, [In] ref WindowPlacement lpwndpl);
 
         [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr wnd, int id, uint fsModifiers, uint vk);
+        public static extern bool RegisterHotKey(IntPtr wnd, int id, uint modifiers, uint vk);
 
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr wnd, int id);

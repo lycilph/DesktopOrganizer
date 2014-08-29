@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{682201D8-7800-468D-8D84-1C8F40B6B504}</ProjectGuid>
+    <ProjectGuid>{C7973E27-4DC3-4E3C-B10D-C5C2A4FF334B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DesktopOrganizer</RootNamespace>
     <AssemblyName>DesktopOrganizer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -35,27 +34,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\organization.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\organization.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.ReactiveUI, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.ReactiveUI.2.1.0\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=0.15.0.9, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,12 +69,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-core.6.0.6\lib\Net45\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="Splat, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Splat, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Splat.1.4.2.1\lib\Net45\Splat.dll</HintPath>
+      <HintPath>..\packages\Splat.1.3.3\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,15 +95,18 @@
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-Xaml.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.0.15.0-ALPHA9\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -118,16 +119,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About\AboutModule.cs" />
     <Compile Include="About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="About\AboutViewModel.cs" />
     <Compile Include="About\Package.cs" />
-    <Compile Include="ApplicationBootstrapper.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Capture\CaptureView.xaml.cs">
+      <DependentUpon>CaptureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\CaptureViewModel.cs" />
+    <Compile Include="Capture\CaptureViewModelBase.cs" />
     <Compile Include="Capture\IconView.xaml.cs">
       <DependentUpon>IconView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Capture\IconViewModel.cs" />
+    <Compile Include="Capture\ViewModelFactory.cs" />
     <Compile Include="Capture\ProgramView.xaml.cs">
       <DependentUpon>ProgramView.xaml</DependentUpon>
     </Compile>
@@ -136,21 +147,14 @@
       <DependentUpon>WindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Capture\WindowViewModel.cs" />
-    <Compile Include="Capture\CaptureView.xaml.cs">
-      <DependentUpon>CaptureView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Capture\CaptureViewModel.cs" />
     <Compile Include="Data\ApplicationSettings.cs" />
-    <Compile Include="Dialogs\DialogButtonOptions.cs" />
-    <Compile Include="Dialogs\DialogController.cs" />
-    <Compile Include="Dialogs\HostDialog.xaml.cs">
-      <DependentUpon>HostDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Main\CaptureCommand.cs" />
     <Compile Include="Main\IconLayoutView.xaml.cs">
       <DependentUpon>IconLayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main\IconLayoutViewModel.cs" />
     <Compile Include="Main\ILayoutViewModel.cs" />
+    <Compile Include="Main\MainModule.cs" />
     <Compile Include="Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -158,95 +162,30 @@
     <Compile Include="Main\ProgramLayoutView.xaml.cs">
       <DependentUpon>ProgramLayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\IconLayoutViewModel.cs" />
     <Compile Include="Main\ProgramLayoutViewModel.cs" />
-    <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
     <Compile Include="Resources\ShortcutControl.xaml.cs">
       <DependentUpon>ShortcutControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\SettingsModule.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
+    <Compile Include="Shell\BootstrapperTasks.cs" />
+    <Compile Include="Shell\IShellView.cs" />
     <Compile Include="Shell\ShellMessage.cs" />
-    <Compile Include="Shell\Utils\InputBindingParser.cs" />
-    <Compile Include="Shell\Utils\InputBindingTrigger.cs" />
-    <Compile Include="Shell\Utils\IWindowCommand.cs" />
-    <Compile Include="Shell\Utils\StartupTasks.cs" />
-    <Compile Include="Shell\Utils\WindowCommand.cs" />
-    <Compile Include="Shell\IShell.cs" />
-    <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utils\AssemblyInfo.cs" />
+    <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="Utils\IconManagerWrapper.cs" />
-    <Compile Include="Utils\ItemViewModelBase.cs" />
     <Compile Include="Utils\KeyboardHook.cs" />
     <Compile Include="Utils\ProcessExtensions.cs" />
-    <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\TaskScheduler.cs" />
     <Compile Include="Utils\TempFile.cs" />
-    <Compile Include="Utils\ViewModelBase.cs" />
     <Compile Include="Utils\WindowManager.cs" />
     <Compile Include="Utils\XmlNodeListExtensions.cs" />
-    <Page Include="About\AboutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Capture\IconView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Capture\ProgramView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Capture\WindowView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Capture\CaptureView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\HostDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Main\IconLayoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Main\MainView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Main\ProgramLayoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ShortcutControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Settings\SettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\ShellView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -262,11 +201,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\appbar.clear.reflect.horizontal.png" />
+    <Resource Include="Resources\appbar.arrow.left.png" />
+    <Resource Include="Resources\appbar.alert.png" />
+    <None Include="app.manifest" />
+    <None Include="Startup.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Resource Include="Resources\organization.ico" />
+    <Resource Include="Resources\organization.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.manifest" />
     <EmbeddedResource Include="packages.config" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -284,29 +231,69 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\appbar.arrow.left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\organization.ico" />
-    <Resource Include="Resources\organization.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework\Framework.csproj">
+      <Project>{6b1aa8b3-e4ef-4d2b-9eaa-df59a9228f5e}</Project>
+      <Name>Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{42d6ed23-2e4a-416e-b922-b3f7a1d25001}</Project>
+      <Project>{98a00bd8-e9cf-4abd-89bc-1ea51e159155}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Startup.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Page Include="About\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Capture\CaptureView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Capture\IconView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Capture\ProgramView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Capture\WindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Main\IconLayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Main\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\ProgramLayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ShortcutControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\appbar.clear.reflect.horizontal.png" />
+    <Resource Include="Resources\appbar.lamp.desk.variant.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\appbar.alert.png" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

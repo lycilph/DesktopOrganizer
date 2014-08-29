@@ -2,67 +2,42 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Linq;
 using Caliburn.Micro;
-using Caliburn.Micro.ReactiveUI;
 using Core;
-using DesktopOrganizer.About;
-using DesktopOrganizer.Dialogs;
-using DesktopOrganizer.Main;
-using DesktopOrganizer.Settings;
-using DesktopOrganizer.Shell.Utils;
-using DesktopOrganizer.Utils;
-using ReactiveUI;
+using Framework.Core;
+using Framework.Module;
+using Framework.Starter;
 
 namespace DesktopOrganizer.Shell
 {
-    [Export(typeof(IShell))]
-    public class ShellViewModel : ReactiveConductor<ViewModelBase>, IShell, IHandle<ShellMessage>
+    [Export(typeof (IShell))]
+    public class ShellViewModel : ShellViewModelBase, IHandle<ShellMessage>
     {
-        private readonly Stack<ViewModelBase> items;
-
-        private ReactiveList<IWindowCommand> _ShellCommands = new ReactiveList<IWindowCommand>();
-        public ReactiveList<IWindowCommand> ShellCommands
-        {
-            get { return _ShellCommands; }
-            private set { this.RaiseAndSetIfChanged(ref _ShellCommands, value); }
-        }
-
-        public bool Exiting { get; private set; }
-
+        private readonly List<IModule> modules;
+            
         [ImportingConstructor]
-        public ShellViewModel(IEventAggregator event_aggregator)
+        public ShellViewModel([ImportMany] IEnumerable<Lazy<IModule, IOrderMetadata>> modules, IEventAggregator event_aggregator)
         {
+            this.modules = modules.OrderBy(obj => obj.Metadata.Order).Select(obj => obj.Value).ToList();
+            this.modules.Apply(m => m.Create(this));
+
             event_aggregator.Subscribe(this);
-
-            ShellCommands.Add(new WindowCommand("Settings", () => Show(IoC.Get<SettingsViewModel>())));
-            ShellCommands.Add(new WindowCommand("About", async () => await DialogController.ShowAsync(new AboutViewModel(), DialogButtonOptions.Ok)));
-            ShellCommands.Add(new WindowCommand("Quit", Exit));
-
-            items = new Stack<ViewModelBase>();
-            Show(IoC.Get<MainViewModel>());
         }
-        
+
         protected override void OnInitialize()
         {
             base.OnInitialize();
             DisplayName = "Desktop Organizer" + (Advapi32.IsRunningAsAdministrator(Process.GetCurrentProcess()) ? " (Administrator)" : string.Empty);
+            modules.Apply(m => m.Initialize());
         }
 
-        private void Back()
+        private void Exit()
         {
-            items.Pop();
-            ActivateItem(items.Peek());
-        }
+            var shell_view = GetView() as IShellView;
+            if (shell_view != null)
+                shell_view.IsExiting = true;
 
-        private void Show(ViewModelBase view_model)
-        {
-            items.Push(view_model);
-            ActivateItem(view_model);
-        }
-
-        public void Exit()
-        {
-            Exiting = true;
             TryClose();
         }
 
@@ -75,6 +50,9 @@ namespace DesktopOrganizer.Shell
                     break;
                 case ShellMessage.MessageKind.Show:
                     Show(message.ViewModel);
+                    break;
+                case ShellMessage.MessageKind.Exit:
+                    Exit();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -73,7 +73,7 @@ namespace DesktopOrganizer.Utils
             current_id = current_id + 1;
 
             if (!User32.RegisterHotKey(internal_window.Handle, current_id, (uint) modifier, (uint) key))
-                throw new InvalidOperationException("Couldn’t register the hot key");
+                throw new InvalidOperationException("Couldn’t register the hot key\n\rMay already be used by another process");
 
             return current_id;
         }

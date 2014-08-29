@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using Core.Data;
 using DesktopOrganizer.Data;
-using DesktopOrganizer.Dialogs;
 using DesktopOrganizer.Shell;
 using DesktopOrganizer.Utils;
-using NLog;
+using Framework.Dialogs;
+using Framework.Mvvm;
 using ReactiveUI;
-using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer.Capture
 {
-    public class CaptureViewModel<TM, TVM> : ViewModelBase where TVM : ItemViewModelBase<TM>, new()
+    public class CaptureViewModel<TM, TVM> : CaptureViewModelBase where TVM : ItemViewModelBase<TM>, new()
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly ApplicationSettings application_settings;
         private readonly Layout<TM> layout;
 
@@ -106,7 +105,7 @@ namespace DesktopOrganizer.Capture
             event_aggregator.PublishOnCurrentThread(ShellMessage.BackMessage());
         }
 
-        public void Ok()
+        public async void Ok()
         {
             logger.Trace("Accepted ({0} - {1})", ItemsTitle, LayoutName);
 
@@ -117,8 +116,19 @@ namespace DesktopOrganizer.Capture
                 Items = Items.Select(i => i.AssociatedObject).ToList()
             };
 
-            AcceptAction(new_layout, layout);
-            Back();
+            var msg = string.Empty;
+            try
+            {
+                AcceptAction(new_layout, layout);
+                Back();
+            }
+            catch (InvalidOperationException e)
+            {
+                msg = e.Message;
+            }
+
+            if (!string.IsNullOrWhiteSpace(msg))
+                await DialogController.ShowMessage("Error", msg);
         }
 
         public void Cancel()

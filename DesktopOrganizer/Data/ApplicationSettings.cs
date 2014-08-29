@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,26 +14,31 @@ using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Data
 {
+    [Export(typeof(ApplicationSettings))]
     public class ApplicationSettings
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private const string TaskName = @"LyCilph\DesktopOrganizerStart";
-        private const string TaskInputFile = "Startup.xml";
+        private const string TASK_NAME = @"LyCilph\DesktopOrganizerStart";
+        private const string TASK_INPUT_FILE = "Startup.xml";
         private readonly KeyboardHook keyboard_hook = new KeyboardHook();
 
         public List<string> ExcludedProcesses { get; set; }
-        public bool SuppressShortcuts { get; set; }
         public ReactiveList<ILayout> Layouts { get; private set; }
+
+        [JsonIgnore]
+        public bool SuppressShortcuts { get; set; }
 
         [JsonIgnore]
         public bool LaunchOnWindowsStart
         {
-            get { return TaskScheduler.HasTask(TaskName); }
+            get { return TaskScheduler.HasTask(TASK_NAME); }
             set { SetLaunchOnWindowsStart(value); }
         }
 
         public ApplicationSettings()
         {
+            logger.Trace("Create");
+
             Layouts = new ReactiveList<ILayout>();
             keyboard_hook.KeyPressed += OnKeyPressed;
         }
@@ -58,9 +64,9 @@ namespace DesktopOrganizer.Data
             if (enable == has_task) return;
             
             if (enable)
-                TaskScheduler.CreateTask(TaskName, TaskInputFile);
+                TaskScheduler.CreateTask(TASK_NAME, TASK_INPUT_FILE);
             else
-                TaskScheduler.DeleteTask(TaskName);
+                TaskScheduler.DeleteTask(TASK_NAME);
         }
 
         public ApplicationSettings Reset()
@@ -85,10 +91,11 @@ namespace DesktopOrganizer.Data
 
         public void Add(ILayout layout)
         {
-            Layouts.Add(layout);
-
+            // Do this first, in case this throws an error
             if (!layout.Shortcut.IsEmpty())
                 keyboard_hook.RegisterHotKey(layout.Shortcut);
+
+            Layouts.Add(layout);
         }
 
         public void Remove(ILayout layout)
@@ -119,18 +126,23 @@ namespace DesktopOrganizer.Data
             return Path.Combine(dir, "settings.txt");
         }
 
-        public static ApplicationSettings Load()
+        public void Load()
         {
             logger.Trace("Load");
-
+            
             var filename = GetFilename();
             if (!File.Exists(filename))
-                return new ApplicationSettings().Reset();
+            {
+                logger.Trace("Not settings found");
+                Reset();
+                return;
+            }
 
             var json = File.ReadAllText(filename);
-            var settings = JsonConvert.DeserializeObject<ApplicationSettings>(json, new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.Objects});
-            settings.ApplyShortcuts();
-            return settings;
+            var settings = JsonConvert.DeserializeObject<ApplicationSettings>(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
+
+            ExcludedProcesses = new List<string>(settings.ExcludedProcesses);
+            Layouts = new ReactiveList<ILayout>(settings.Layouts);
         }
 
         public void Save()

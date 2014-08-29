@@ -20,7 +20,7 @@ namespace Core
 
             if (shell_default_view == IntPtr.Zero)
             {
-                User32.EnumWindows((wnd, lParam) =>
+                User32.EnumWindows((wnd, l_param) =>
                 {
                     var sb = new StringBuilder(256);
                     User32.GetClassName(wnd, sb, sb.Capacity);

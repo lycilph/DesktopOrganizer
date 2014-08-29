@@ -3,18 +3,42 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:cal="http://www.caliburnproject.org"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:window="clr-namespace:Framework.Window;assembly=Framework"
                    xmlns:tb="http://www.hardcodet.net/taskbar"
+                   mc:Ignorable="d" 
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    WindowStartupLocation="CenterScreen"
                    Height="600"
                    Width="800"
+                   RightWindowCommandsOverlayBehavior="HiddenTitleBar"
                    Loaded="OnLoaded"
                    StateChanged="OnStateChanged"
                    Closing="OnClosing">
     
+    <metro:MetroWindow.LeftWindowCommands>
+        <metro:WindowCommands>
+            <ItemsControl x:Name="LeftShellCommands">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button x:Name="Execute"
+                                Content="{Binding DisplayName}"
+                                cal:Bind.Model="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </metro:WindowCommands>
+    </metro:MetroWindow.LeftWindowCommands>
+    
     <metro:MetroWindow.RightWindowCommands>
         <metro:WindowCommands>
-            <ItemsControl x:Name="ShellCommands">
+            <ItemsControl x:Name="RightShellCommands">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -31,11 +55,24 @@
         </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
     
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl x:Name="ShellFlyouts" d:DataContext="{d:DesignInstance window:FlyoutBase}">
+            <metro:FlyoutsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type metro:Flyout}" BasedOn="{StaticResource {x:Type metro:Flyout}}">
+                    <Setter Property="Header" Value="{Binding DisplayName}" />
+                    <Setter Property="IsOpen" Value="{Binding IsOpen}" />
+                    <Setter Property="IsPinned" Value="{Binding IsPinned}"/>
+                    <Setter Property="Position" Value="{Binding Position}" />
+                </Style>
+            </metro:FlyoutsControl.ItemContainerStyle>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+    
     <Grid>
-        <metro:TransitioningContentControl x:Name="ActiveItem"/>
+        <metro:MetroContentControl x:Name="ActiveItem"/>
 
         <tb:TaskbarIcon x:Name="TaskbarIcon"
-                        IconSource="../../Resources/organization.ico"
+                        IconSource="../Resources/organization.ico"
                         TrayMouseDoubleClick="OnTrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>

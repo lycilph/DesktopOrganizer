@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:resources="clr-namespace:DesktopOrganizer.Resources"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:resources="clr-namespace:Framework.Resources;assembly=Framework"
+             xmlns:local="clr-namespace:DesktopOrganizer.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -43,7 +44,7 @@
                            Text="Shortcut"
                            VerticalAlignment="Center"
                            Style="{StaticResource SubHeaderTextBlockStyle}"/>
-                <resources:ShortcutControl Margin="10,0,0,0" Shortcut="{Binding Shortcut}"/>
+                <local:ShortcutControl Margin="10,0,0,0" Shortcut="{Binding Shortcut}"/>
                 <Image Source="../Resources/appbar.alert.png"
                        ToolTip="Shortcut is already used!"
                        Height="{Binding ElementName=shortcut_textblock, Path=ActualHeight}"

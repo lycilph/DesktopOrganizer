@@ -2,13 +2,16 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using NLog;
+using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer.Shell
 {
-    public partial class ShellView
+    public partial class ShellView : IShellView
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly WindowStyle default_window_style;
+
+        public bool IsExiting { get; set; }
 
         public ShellView()
         {
@@ -55,10 +58,10 @@ namespace DesktopOrganizer.Shell
         private void OnClosing(object sender, CancelEventArgs e)
         {
 #if !DEBUG
-            var vm = DataContext as IShell;
+            var vm = DataContext as Framework.Core.IShell;
             if (vm == null) return;
 
-            if (vm.Exiting)
+            if (IsExiting)
             {
                 TaskbarIcon.Visibility = Visibility.Hidden;
             }

@@ -8,12 +8,13 @@ using DesktopOrganizer.Capture;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell;
 using DesktopOrganizer.Utils;
+using Framework.Mvvm;
 using ReactiveUI;
 using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Main
 {
-    [Export(typeof(MainViewModel))]
+    [Export("Main", typeof(IViewModel))]
     public class MainViewModel : ViewModelBase
     {
         private readonly IEventAggregator event_aggregator;
@@ -77,39 +78,8 @@ namespace DesktopOrganizer.Main
 
         public void Capture(CaptureCommand capture_command)
         {
-            switch (capture_command.Kind)
-            {
-                case CaptureCommand.CaptureKind.Windows:
-                {
-                    var layout = new Layout<Program> {Name = "Default"};
-                    var vm = new CaptureViewModel<Program, ProgramViewModel>(layout)
-                    {
-                        Title = "Capture Windows Layout",
-                        ItemsTitle = "Windows",
-                        CaptureOnActivation = true,
-                        AcceptAction = (l, _) => application_settings.Add(l),
-                        CaptureAction = () => WindowManager.GetPrograms()
-                    };
-                    event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
-                }
-                break;
-                case CaptureCommand.CaptureKind.Icons:
-                {
-                    var layout = new Layout<Icon> { Name = "Default" };
-                    var vm = new CaptureViewModel<Icon, IconViewModel>(layout)
-                    {
-                        Title = "Capture Icons Layout",
-                        ItemsTitle = "Icons",
-                        CaptureOnActivation = true,
-                        AcceptAction = (l, _) => application_settings.Add(l),
-                        CaptureAction = () => IconManagerWrapper.GetIcons()
-                    };
-                    event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
-                }
-                break;
-                default:
-                    throw new Exception();
-            }
+            var vm = ViewModelFactory.Create(capture_command.Kind);
+            event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
         }
 
         public void Apply()
@@ -130,32 +100,8 @@ namespace DesktopOrganizer.Main
 
         public void Edit()
         {
-            if (CurrentLayout is ProgramLayoutViewModel)
-            {
-                var layout = CurrentLayout as ProgramLayoutViewModel;
-                var vm = new CaptureViewModel<Program, ProgramViewModel>(layout.AssociatedObject)
-                {
-                    Title = "Edit Windows Layout",
-                    ItemsTitle = "Windows",
-                    AcceptAction = (l1, l2) => application_settings.Update(l1, l2),
-                    CaptureAction = () => WindowManager.GetPrograms()
-                };
-                event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
-            }
-            else if (CurrentLayout is IconLayoutViewModel)
-            {
-                var layout = CurrentLayout as IconLayoutViewModel;
-                var vm = new CaptureViewModel<Icon, IconViewModel>(layout.AssociatedObject)
-                {
-                    Title = "Edit Icons Layout",
-                    ItemsTitle = "Icons",
-                    AcceptAction = (l1, l2) => application_settings.Update(l1, l2),
-                    CaptureAction = () => IconManagerWrapper.GetIcons()
-                };
-                event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
-            }
-            else
-                throw new Exception();
+            var vm = ViewModelFactory.Edit(CurrentLayout);
+            event_aggregator.PublishOnCurrentThread(ShellMessage.ShowMessage(vm));
         }
 
         public void Delete()

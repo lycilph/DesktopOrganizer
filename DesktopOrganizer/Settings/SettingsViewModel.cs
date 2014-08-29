@@ -1,28 +1,30 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
+using System;
 using System.Linq;
+using System.Reactive.Linq;
 using Caliburn.Micro;
 using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell;
-using DesktopOrganizer.Utils;
+using Framework.Window;
+using MahApps.Metro.Controls;
 using NLog;
 using ReactiveUI;
 using LogManager = NLog.LogManager;
 
 namespace DesktopOrganizer.Settings
 {
-    [Export(typeof(SettingsViewModel))]
-    public class SettingsViewModel : ViewModelBase
+    [Export("Settings", typeof(IFlyout))]
+    public class SettingsViewModel : FlyoutBase
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly IEventAggregator event_aggregator;
         private readonly ApplicationSettings application_settings;
+        private readonly IEventAggregator event_aggregator;
 
-        private string _ExcludedProcesses;
-        public string ExcludedProcesses
+        private string _Processes;
+        public string Processes
         {
-            get { return _ExcludedProcesses; }
-            set { this.RaiseAndSetIfChanged(ref _ExcludedProcesses, value); }
+            get { return _Processes; }
+            set { this.RaiseAndSetIfChanged(ref _Processes, value); }
         }
 
         private bool _LaunchOnWindowsStart;
@@ -33,55 +35,45 @@ namespace DesktopOrganizer.Settings
         }
 
         [ImportingConstructor]
-        public SettingsViewModel(ApplicationSettings application_settings, IEventAggregator event_aggregator)
+        public SettingsViewModel(IEventAggregator event_aggregator, ApplicationSettings application_settings) : base("Settings", Position.Right)
         {
-            this.application_settings = application_settings;
             this.event_aggregator = event_aggregator;
+            this.application_settings = application_settings;
+
+            this.ObservableForProperty(x => x.IsOpen)
+                .Where(x => x.Value)
+                .Subscribe(x => ReadSettings());
+
+            this.ObservableForProperty(x => x.IsOpen)
+                .Where(x => !x.Value)
+                .Subscribe(x => WriteSettings());
         }
 
-        private void Initialize()
+        private void ReadSettings()
         {
-            ExcludedProcesses = string.Join(", ", application_settings.ExcludedProcesses);
+            logger.Trace("Settings read");
+
+            Processes = string.Join(", ", application_settings.ExcludedProcesses);
             LaunchOnWindowsStart = application_settings.LaunchOnWindowsStart;
         }
 
-        protected override void OnActivate()
+        private void WriteSettings()
         {
-            logger.Trace("Activate");
+            logger.Trace("Settings written");
 
-            base.OnActivate();
-            Initialize();
-        }
-
-        public void Back()
-        {
-            logger.Trace("Back");
-
-            event_aggregator.PublishOnCurrentThread(ShellMessage.BackMessage());
-        }
-
-        public void Ok()
-        {
-            logger.Trace("Accepted");
-
-            application_settings.ExcludedProcesses = ExcludedProcesses.Split(new[] { "," }, StringSplitOptions.None).Select(s => s.Trim()).ToList();
+            application_settings.ExcludedProcesses = Processes.Split(new[] { "," }, StringSplitOptions.None).Select(s => s.Trim()).ToList();
             application_settings.LaunchOnWindowsStart = LaunchOnWindowsStart;
-            Back();
-        }
-
-        public void Cancel()
-        {
-            logger.Trace("Cancel");
-
-            Back();
         }
 
         public void Reset()
         {
-            logger.Trace("Reset");
-
             application_settings.Reset();
-            Initialize();
+            ReadSettings();
+        }
+
+        public void Exit()
+        {
+            event_aggregator.PublishOnCurrentThread(ShellMessage.ExitMessage());
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using DesktopOrganizer.Utils;
+using Framework.Utils;
 using ReactiveUI;
 
 namespace DesktopOrganizer.About
@@ -39,13 +39,14 @@ namespace DesktopOrganizer.About
 
         public AboutViewModel()
         {
-            var info = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            Title = info.ProductTitle;
+            var assembly = Assembly.GetEntryAssembly();
+            var info = new AssemblyInfo(assembly);
+            Title = info.Title;
             Name = info.Company;
             Version = info.Version;
 
-            var config_file = Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(s => s.EndsWith("packages.config"));
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(config_file))
+            var config_file = assembly.GetManifestResourceNames().Single(s => s.EndsWith("packages.config"));
+            using (var stream = assembly.GetManifestResourceStream(config_file))
             {
                 var doc = new XmlDocument();
                 doc.Load(stream);

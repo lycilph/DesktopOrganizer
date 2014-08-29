@@ -1,5 +1,5 @@
 ﻿using Core.Data;
-using DesktopOrganizer.Utils;
+using Framework.Mvvm;
 
 namespace DesktopOrganizer.Main
 {

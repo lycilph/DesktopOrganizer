@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using Core;
 using Core.Data;
-using DesktopOrganizer.Utils;
+using Framework.Mvvm;
 using ReactiveUI;
 
 namespace DesktopOrganizer.Capture
