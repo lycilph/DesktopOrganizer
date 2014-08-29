@@ -142,7 +142,7 @@ namespace DesktopOrganizer.Data
             var filename = GetFilename();
             if (!File.Exists(filename))
             {
-                logger.Trace("Not settings found");
+                logger.Trace("No settings found");
                 Reset();
                 return;
             }
