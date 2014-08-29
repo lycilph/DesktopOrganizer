@@ -9,16 +9,18 @@ using DesktopOrganizer.Data;
 using DesktopOrganizer.Shell;
 using DesktopOrganizer.Utils;
 using Framework.Mvvm;
+using GongSolutions.Wpf.DragDrop;
 using ReactiveUI;
 using WindowManager = DesktopOrganizer.Utils.WindowManager;
 
 namespace DesktopOrganizer.Main
 {
     [Export("Main", typeof(IViewModel))]
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDropTarget
     {
         private readonly IEventAggregator event_aggregator;
         private readonly ApplicationSettings application_settings;
+        private readonly DefaultDropHandler default_drop_handler = new DefaultDropHandler();
 
         public List<CaptureCommand> CaptureCommands { get; set; }
 
@@ -118,6 +120,29 @@ namespace DesktopOrganizer.Main
             }
             else
                 throw new Exception();
+        }
+
+        public void DragOver(IDropInfo drop_info)
+        {
+            default_drop_handler.DragOver(drop_info);
+        }
+
+        public void Drop(IDropInfo drop_info)
+        {
+            ILayout source;
+            if (drop_info.Data is ProgramLayoutViewModel)
+                source = (drop_info.Data as ProgramLayoutViewModel).AssociatedObject;
+            else if (drop_info.Data is IconLayoutViewModel)
+                source = (drop_info.Data as IconLayoutViewModel).AssociatedObject;
+            else
+                throw new Exception();
+
+            application_settings.Move(source, drop_info.InsertIndex);
+
+            if (drop_info.Data is ProgramLayoutViewModel)
+                CurrentLayout = Layouts.OfType<ProgramLayoutViewModel>().Single(l => l.AssociatedObject == source);
+            else if (drop_info.Data is IconLayoutViewModel)
+                CurrentLayout = Layouts.OfType<IconLayoutViewModel>().Single(l => l.AssociatedObject == source);
         }
     }
 }

@@ -6,6 +6,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="layout_root">
@@ -54,7 +55,11 @@
             <ListBox x:Name="Layouts"
                      Margin="0,25,0,0"
                      ItemContainerStyle="{StaticResource LayoutListBoxItem}"
-                     cal:Message.Attach="[Event MouseDoubleClick] = [Edit]"/>
+                     cal:Message.Attach="[Event MouseDoubleClick] = [Edit]"
+                     dd:DragDrop.IsDragSource="True" 
+                     dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.UseDefaultDragAdorner="True"
+                     dd:DragDrop.DropHandler="{Binding}"/>
         </DockPanel>
     </Grid>
 </UserControl>

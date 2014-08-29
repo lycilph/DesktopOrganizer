@@ -117,6 +117,15 @@ namespace DesktopOrganizer.Data
                 keyboard_hook.RegisterHotKey(new_layout.Shortcut);
         }
 
+        public void Move(ILayout source, int insert_index)
+        {
+            var index = Layouts.IndexOf(source);
+            Layouts.Remove(source);
+            if (index < insert_index)
+                --insert_index;
+            Layouts.Insert(insert_index, source);
+        }
+
         private static string GetFilename()
         {
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
