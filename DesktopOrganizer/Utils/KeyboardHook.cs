@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Core;
+using NLog;
+using System;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Core;
 using Shortcut = Core.Data.Shortcut;
 
 namespace DesktopOrganizer.Utils
@@ -9,6 +10,8 @@ namespace DesktopOrganizer.Utils
     // http://www.liensberger.it/web/blog/?p=207
     public sealed class KeyboardHook : IDisposable
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         // Represents the window that is used internally to get the messages.
         private sealed class Window : NativeWindow, IDisposable
         {
@@ -72,8 +75,13 @@ namespace DesktopOrganizer.Utils
         {
             current_id = current_id + 1;
 
+            logger.Trace("Registering shortcut [{0} - {1}]", modifier, key);
+
             if (!User32.RegisterHotKey(internal_window.Handle, current_id, (uint) modifier, (uint) key))
+            {
+                logger.Error("Registration failded");
                 throw new InvalidOperationException("Couldn’t register the hot key\n\rMay already be used by another process");
+            }
 
             return current_id;
         }

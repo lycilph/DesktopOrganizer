@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Framework;component/Resources/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <ResourceDictionary>
-                    <core:ApplicationBootstrapper x:Key="bootstrapper"/>
+                    <core:ApplicationBootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

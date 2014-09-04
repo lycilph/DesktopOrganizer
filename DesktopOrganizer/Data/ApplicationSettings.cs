@@ -47,6 +47,8 @@ namespace DesktopOrganizer.Data
         {
             if (SuppressShortcuts) return;
 
+            logger.Trace("Detected shortcut [{0} - {1}]", args.Modifier, args.GetWpfKey());
+
             var layout = Layouts.SingleOrDefault(l => l.Shortcut.Match(args.Modifier, args.GetWpfKey()));
             if (layout == null) return;
 
@@ -80,6 +82,8 @@ namespace DesktopOrganizer.Data
 
         public void ApplyShortcuts()
         {
+            logger.Trace("Applying shortcuts");
+
             keyboard_hook.UnregisterAll();
             Layouts.Where(l => !l.Shortcut.IsEmpty()).Apply(l => keyboard_hook.RegisterHotKey(l.Shortcut));
         }
