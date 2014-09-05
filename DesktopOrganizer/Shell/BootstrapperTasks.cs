@@ -18,6 +18,7 @@ namespace DesktopOrganizer.Shell
 
             var settings = IoC.Get<ApplicationSettings>();
             settings.Load();
+            settings.ApplyShortcuts();
         }
 
         [Export(ApplicationBootstrapper.SHUTDOWN_TASK_NAME, typeof(BootstrapperTask))]
