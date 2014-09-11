@@ -59,6 +59,11 @@ namespace DesktopOrganizer.Utils
                     .SelectSingleNode("//ns:Command", manager)
                     .InnerText = "\"" + app + "\"";
 
+                // Set working directory
+                doc.DocumentElement
+                    .SelectSingleNode("//ns:WorkingDirectory", manager)
+                    .InnerText = Path.GetDirectoryName(app);
+
                 doc.Save(file.Name);
 
                 var p = Process.Start(new ProcessStartInfo

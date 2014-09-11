@@ -5,24 +5,41 @@ using System.IO;
 using System.IO.Pipes;
 using Core.Data;
 using Newtonsoft.Json;
+using NLog;
 
 namespace DesktopOrganizer.Utils
 {
     public static class IconManagerWrapper
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public static IEnumerable<Icon> GetIcons()
         {
-            var proc = Process.Start(new ProcessStartInfo("IconHelper.exe")
+            logger.Trace("GetIcons - start");
+
+            Process proc = null;
+            try
             {
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            });
-            if (proc == null)
-                throw new Exception();
+                proc = Process.Start(new ProcessStartInfo("IconHelper.exe")
+                {
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
+                if (proc == null)
+                    throw new Exception();
+            }
+            catch (Exception e)
+            {
+                logger.Error(e.Message);
+            }
+
+            logger.Trace("GetIcons - process started");
 
             string text;
             using (var server = new NamedPipeServerStream("DesktopOrganizerPipe", PipeDirection.InOut))
             {
+                logger.Trace("GetIcons - pipe server stream created");
+
                 try
                 {
                     server.WaitForConnection();
@@ -45,6 +62,7 @@ namespace DesktopOrganizer.Utils
             }
 
             proc.WaitForExit();
+            logger.Trace("GetIcons - end");
             return JsonConvert.DeserializeObject<List<Icon>>(text);
         }
 
